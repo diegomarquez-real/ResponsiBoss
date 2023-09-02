@@ -8,12 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="dbup-core" Version="5.0.10" />
-    <PackageReference Include="dbup-sqlserver" Version="5.0.8" />
+    <None Remove="Scripts\Script_1 - Create User Profile Table.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Scripts\" />
+    <EmbeddedResource Include="Scripts\Script_1 - Create User Profile Table.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup-core" Version="5.0.10" />
+    <PackageReference Include="dbup-sqlserver" Version="5.0.8" />
   </ItemGroup>
 
 </Project>

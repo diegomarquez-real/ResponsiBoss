@@ -1,0 +1,20 @@
+CREATE TABLE [dbo].[UserProfile](
+	[UserId] [uniqueidentifier] NOT NULL,
+	[EmailAddress] [varchar](255) NOT NULL,
+	[PasswordHash] [varchar](max) NOT NULL,
+	[FirstName] [varchar](255) NOT NULL,
+	[LastName] [varchar](255) NOT NULL,
+	[PhoneNumber] [nvarchar](255) NULL,
+ CONSTRAINT [PK_UserProfile] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [Unique_UserProfile_EmailAddress] UNIQUE NONCLUSTERED 
+(
+	[EmailAddress] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[UserProfile] ADD  CONSTRAINT [DF_UserProfile_UserId]  DEFAULT (newid()) FOR [UserId]
+GO
