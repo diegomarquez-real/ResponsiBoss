@@ -10,12 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configure settings for IOptions injection
-ResponsiBoss.Api.Options.JwtBearerOptions options = new();
-builder.Configuration.GetSection("Authentication:Schemes:Bearer")
-    .Bind(options);
-
-//builder.Services.Configure<ResponsiBoss.Api.Options.JwtBearerOptions>(builder.Configuration.GetSection("Authentication:Schemes:Bearer"));
+// Configure settings for IOptions injection.
+builder.Services.Configure<ResponsiBoss.Api.Options.JwtBearerOptions>(builder.Configuration.GetSection("Authentication:Schemes:Bearer"));
 
 var app = builder.Build();
 
