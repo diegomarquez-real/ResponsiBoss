@@ -1,11 +1,21 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddAuthentication().AddJwtBearer();
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configure settings for IOptions injection
+ResponsiBoss.Api.Options.JwtBearerOptions options = new();
+builder.Configuration.GetSection("Authentication:Schemes:Bearer")
+    .Bind(options);
+
+//builder.Services.Configure<ResponsiBoss.Api.Options.JwtBearerOptions>(builder.Configuration.GetSection("Authentication:Schemes:Bearer"));
 
 var app = builder.Build();
 
@@ -17,6 +27,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
