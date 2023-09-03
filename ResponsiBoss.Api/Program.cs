@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 // Configure settings for IOptions injection.
 builder.Services.Configure<ResponsiBoss.Api.Options.JwtBearerOptions>(builder.Configuration.GetSection("Authentication:Schemes:Bearer"));
+builder.Services.Configure<ResponsiBoss.Api.Options.ConnectionStringOptions>(builder.Configuration.GetSection("ConnectionStrings"));
 
 var app = builder.Build();
 
