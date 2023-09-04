@@ -11,7 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{6EF4EEB4-226
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{FF9BDC73-0320-41CA-8216-F682F512223A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiBoss.Data.Models", "ResponsiBoss.Data.Models\ResponsiBoss.Data.Models.csproj", "{6EEBA3CA-A7A5-4A1B-BEC7-903744A62B41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResponsiBoss.Data.Models", "ResponsiBoss.Data.Models\ResponsiBoss.Data.Models.csproj", "{6EEBA3CA-A7A5-4A1B-BEC7-903744A62B41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiBoss.Data", "ResponsiBoss.Data\ResponsiBoss.Data.csproj", "{6AC4260C-D2B3-4932-A8E3-99B27365A2BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiBoss.Data.Abstractions", "ResponsiBoss.Data.Abstractions\ResponsiBoss.Data.Abstractions.csproj", "{FA148F19-05A5-4EF7-8217-F437D21CA3A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiBoss.Data.DependencyInjectionInfrastructure", "ResponsiBoss.Data.DependencyInjectionInfrastructure\ResponsiBoss.Data.DependencyInjectionInfrastructure.csproj", "{27884F41-E6F9-4901-BA35-F84AF413EB9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +37,18 @@ Global
 		{6EEBA3CA-A7A5-4A1B-BEC7-903744A62B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EEBA3CA-A7A5-4A1B-BEC7-903744A62B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EEBA3CA-A7A5-4A1B-BEC7-903744A62B41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AC4260C-D2B3-4932-A8E3-99B27365A2BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AC4260C-D2B3-4932-A8E3-99B27365A2BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AC4260C-D2B3-4932-A8E3-99B27365A2BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AC4260C-D2B3-4932-A8E3-99B27365A2BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA148F19-05A5-4EF7-8217-F437D21CA3A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA148F19-05A5-4EF7-8217-F437D21CA3A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA148F19-05A5-4EF7-8217-F437D21CA3A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA148F19-05A5-4EF7-8217-F437D21CA3A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27884F41-E6F9-4901-BA35-F84AF413EB9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27884F41-E6F9-4901-BA35-F84AF413EB9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27884F41-E6F9-4901-BA35-F84AF413EB9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27884F41-E6F9-4901-BA35-F84AF413EB9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +57,9 @@ Global
 		{F6009914-6762-4A91-B2F6-CBBA9B536424} = {6EF4EEB4-2263-4F58-880E-4F339B9ABA9F}
 		{F0C247B1-F2FF-480F-A81E-223C3A114653} = {6EF4EEB4-2263-4F58-880E-4F339B9ABA9F}
 		{6EEBA3CA-A7A5-4A1B-BEC7-903744A62B41} = {FF9BDC73-0320-41CA-8216-F682F512223A}
+		{6AC4260C-D2B3-4932-A8E3-99B27365A2BA} = {FF9BDC73-0320-41CA-8216-F682F512223A}
+		{FA148F19-05A5-4EF7-8217-F437D21CA3A8} = {FF9BDC73-0320-41CA-8216-F682F512223A}
+		{27884F41-E6F9-4901-BA35-F84AF413EB9E} = {FF9BDC73-0320-41CA-8216-F682F512223A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F665D101-8762-4000-8F7D-D790BEE2F1D7}

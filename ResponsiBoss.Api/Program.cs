@@ -1,10 +1,14 @@
+using ResponsiBoss.Data.DependencyInjectionInfrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddAuthentication().AddJwtBearer();
 builder.Services.AddAuthorization();
-
 builder.Services.AddControllers();
+
+// Implement Dependency Injection Container
+builder.Services.Init(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -12,7 +16,6 @@ builder.Services.AddSwaggerGen();
 
 // Configure settings for IOptions injection.
 builder.Services.Configure<ResponsiBoss.Api.Options.JwtBearerOptions>(builder.Configuration.GetSection("Authentication:Schemes:Bearer"));
-builder.Services.Configure<ResponsiBoss.Api.Options.ConnectionStringOptions>(builder.Configuration.GetSection("ConnectionStrings"));
 
 var app = builder.Build();
 
