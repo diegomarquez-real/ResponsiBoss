@@ -30,12 +30,17 @@ namespace ResponsiBoss.Data
             return inserted == 0;
         }
 
-        public async Task<bool> DeleteAsync(TEntity entity)
+        public async Task<bool> DeleteAsync(TPrimaryKey id)
         {
             bool deleted = false;
 
             try
             {
+                var entity = await this.DbConnection.GetAsync<TEntity>(id);
+
+                if (entity == null)
+                    return false;
+
                 deleted = await this.DbConnection.DeleteAsync<TEntity>(entity);
             }
             catch (Exception ex) { }
