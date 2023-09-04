@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using PetaPoco;
@@ -19,24 +20,24 @@ namespace ResponsiBoss.Data.Models
 {
 	[TableName("dbo.SchemaVersions")]
 	[PrimaryKey("Id")]
-	[ExplicitColumns]
     public partial class SchemaVersion  
     {
-		[Column] public int Id { get; set; }
-		[Column] public string ScriptName { get; set; }
-		[Column] public DateTime Applied { get; set; }
+        [Key] 
+		public int Id { get; set; }
+		public string ScriptName { get; set; }
+		public DateTime Applied { get; set; }
 	}
     
 	[TableName("dbo.UserProfile")]
 	[PrimaryKey("UserId")]
-	[ExplicitColumns]
     public partial class UserProfile  
     {
-		[Column] public Guid UserId { get; set; }
-		[Column] public string EmailAddress { get; set; }
-		[Column] public string PasswordHash { get; set; }
-		[Column] public string FirstName { get; set; }
-		[Column] public string LastName { get; set; }
-		[Column] public string PhoneNumber { get; set; }
+        [Key] 
+		public Guid UserId { get; set; }
+		public string EmailAddress { get; set; }
+		public string PasswordHash { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public string PhoneNumber { get; set; }
 	}
 }

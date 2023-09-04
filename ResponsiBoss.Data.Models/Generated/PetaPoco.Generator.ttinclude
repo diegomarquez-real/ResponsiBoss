@@ -6,6 +6,7 @@ if (string.IsNullOrEmpty(RepoName)) RepoName="PetaPocoDB";
 #>
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using PetaPoco;
@@ -163,6 +164,9 @@ foreach(Column col in from c in tbl.Columns where !c.Ignore select c)
 {
 		// Column bindings
 #>
+<# if (col.IsPK) { #>
+        [Key] 
+<# } #>
 <# if (TrackModifiedColumns) { #>
 <# if (col.Name!=col.PropertyName) { #>
         [Column("<#=col.Name#>")] 
