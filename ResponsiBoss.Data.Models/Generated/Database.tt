@@ -8,9 +8,9 @@
 	ConnectionStringName = "PetaPoco_T4_ConnectionString";
     Namespace = "ResponsiBoss.Data.Models";
     RepoName = "";
-    GenerateOperations = true;
+    GenerateOperations = false;
 	GeneratePocos = true;
-	GenerateCommon = true;
+	GenerateCommon = false;
 	ClassPrefix = "";
 	ClassSuffix = "";
 	TrackModifiedColumns = false;
@@ -18,11 +18,9 @@
 	ExcludePrefix = new string[] {}; // Exclude tables by prefix.
 	IncludeViews = true;
 	bool WriteUsings = true;
-
     // Read schema
 	var tables = LoadTables();
-
-
+	
 /*
 	// Tweak Schema
 	tables["tablename"].Ignore = true;							// To ignore a table
@@ -30,7 +28,7 @@
 	tables["tablename"]["columnname"].Ignore = true;			// To ignore a column
 	tables["tablename"]["columnname"].PropertyName="newname";	// To change the property name of a column
 	tables["tablename"]["columnname"].PropertyType="bool";		// To change the property type of a column
-*/
+*/	
 
 	// Generate output
 	if (tables.Count>0)
