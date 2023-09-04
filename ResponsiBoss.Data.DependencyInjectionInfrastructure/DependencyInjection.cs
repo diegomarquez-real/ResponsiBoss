@@ -16,6 +16,13 @@ namespace ResponsiBoss.Data.DependencyInjectionInfrastructure
             services.Configure<Options.ConnectionStringOptions>(options => configuration.GetSection("ConnectionStrings"));
 
             services.AddScoped<Abstractions.IDataContext, DataContext>();
+
+            // Using Scrutor to register all repositories.
+            services.Scan(scan =>
+                scan.FromAssemblyOf<UserRepository>() // The actual repoository here doesn't matter, just using it to find which assembly our repositories are in.
+                .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Repository")))
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime());
         }
     }
 }

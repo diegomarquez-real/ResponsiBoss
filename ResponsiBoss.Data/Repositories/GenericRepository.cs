@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ResponsiBoss.Data.Repositories
+namespace ResponsiBoss.Data
 {
-    internal class GenericRepository<TEntity, TPrimaryKey> : Abstractions.IGenericRepository<TEntity, TPrimaryKey> where TEntity : class
+    public class GenericRepository<TEntity, TPrimaryKey> : Abstractions.IGenericRepository<TEntity, TPrimaryKey> where TEntity : class
     {
         protected IDbConnection DbConnection;
 
