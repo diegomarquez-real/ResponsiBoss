@@ -17,7 +17,6 @@
 	ExplicitColumns = true;
 	ExcludePrefix = new string[] {}; // Exclude tables by prefix.
 	IncludeViews = true;
-	bool WriteUsings = true;
     // Read schema
 	var tables = LoadTables();
 	
