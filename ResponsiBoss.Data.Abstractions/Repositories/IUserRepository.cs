@@ -9,10 +9,10 @@ namespace ResponsiBoss.Data.Abstractions
 {
     public interface IUserRepository
     {
-        Task<UserProfile> FindByIdAsync(Guid id);
+        Task<UserProfile> FindByIdAsync(Guid userId);
         Task<IEnumerable<UserProfile>> GetAllAsync();
-        Task<Guid> CreateAsync(UserProfile entity);
-        Task<Guid> DeleteAsync(Guid id);
-        Task<Guid> UpdateAsync(UserProfile entity);
+        Task<Guid> CreateAsync(UserProfile user);
+        Task<Guid> DeleteAsync(Guid userId);
+        Task<Guid> UpdateAsync(UserProfile user);
     }
 }

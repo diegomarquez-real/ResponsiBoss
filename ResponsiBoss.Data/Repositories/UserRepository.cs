@@ -15,14 +15,14 @@ namespace ResponsiBoss.Data
         {
         }
 
-        public async Task<Guid> CreateAsync(UserProfile entity)
+        public async Task<Guid> CreateAsync(UserProfile user)
         {
             string sql = @"INSERT INTO [User] ([UserId], [Username], [Password], [EmailAddress], [PhoneNumber], [CreatedOn])
                            VALUES (@UserId, @Username, @Password, @EmailAddress, @PhoneNumber, @CreatedOn)";
 
-            await base.DbConnection.ExecuteScalarAsync(sql, entity);
+            await base.DbConnection.ExecuteScalarAsync(sql, user);
 
-            return entity.UserId;
+            return user.UserId;
         }
 
         public async Task<Guid> DeleteAsync(Guid userId)
@@ -56,13 +56,13 @@ namespace ResponsiBoss.Data
             return users;
         }
 
-        public async Task<Guid> UpdateAsync(UserProfile entity)
+        public async Task<Guid> UpdateAsync(UserProfile user)
         {
             string sql = @"UPDATE [User]
                            SET [Username] = @Username, [Password] = @Password, [EmailAddress] = @EmailAddress, [PhoneNumber] = @PhoneNumber
                            WHERE [UserId] = @UserId";
             
-            var userId = await base.DbConnection.ExecuteScalarAsync<Guid>(sql, entity);
+            var userId = await base.DbConnection.ExecuteScalarAsync<Guid>(sql, user);
 
             return userId;
         }
