@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace ResponsiBoss.Data.Abstractions
 {
-    public interface IUserRepository
+    public interface IUserProfileRepository
     {
         Task<UserProfile> FindByIdAsync(Guid userId);
+        Task<UserProfile> FindByEmailAsync(string email);
         Task<IEnumerable<UserProfile>> GetAllAsync();
         Task<Guid> CreateAsync(UserProfile user);
-        Task<Guid> DeleteAsync(Guid userId);
         Task<Guid> UpdateAsync(UserProfile user);
+        Task DeleteAsync(Guid userId);
     }
 }

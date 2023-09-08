@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ResponsiBoss.Api.Models
 {
-    public class UserLoginModel
+    public class AuthTokenModel
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public System.Guid UserId { get; set; }
+        public string Token { get; set; }
     }
 }
