@@ -65,9 +65,9 @@ namespace ResponsiBoss.Api.Services
             userProfile.UserId = Guid.NewGuid();
             userProfile.PasswordHash = HashPassword(userProfile, createUserModel.Password);
 
-            var userId = await _userProfileRepository.CreateAsync(userProfile);
+            var result = await _userProfileRepository.CreateAsync(userProfile);
 
-            return userId;
+            return result.UserId;
         }
 
         public async Task UpdateUserAsync(UserModel user, UpdateUserModel updateUserModel)

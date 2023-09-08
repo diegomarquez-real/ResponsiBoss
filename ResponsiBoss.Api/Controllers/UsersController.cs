@@ -45,7 +45,7 @@ namespace ResponsiBoss.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, "Failed To Authenticate.");
 
                 return BadRequest();
             }
@@ -68,7 +68,7 @@ namespace ResponsiBoss.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, "Failed To Get User.");
 
                 return BadRequest();
             }
@@ -88,7 +88,7 @@ namespace ResponsiBoss.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, "Failed To Get Users.");
 
                 return BadRequest();
             }
@@ -107,7 +107,7 @@ namespace ResponsiBoss.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, "Failed To Create User.");
 
                 return BadRequest();
             }  
@@ -132,7 +132,7 @@ namespace ResponsiBoss.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, "Failed To Update User.");
 
                 return BadRequest();
             }
@@ -151,7 +151,7 @@ namespace ResponsiBoss.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, "Failed To Delete User.");
 
                 return BadRequest();
             }
