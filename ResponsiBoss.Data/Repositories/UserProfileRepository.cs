@@ -25,7 +25,7 @@ namespace ResponsiBoss.Data
             try
             {
                 var sql = @"SELECT u.*
-                            FROM [UserProfile] AS u
+                            FROM UserProfile AS u
                             WHERE u.EmailAddress = @EmailAddress";
 
                 return await base.DbConnection.QuerySingleAsync<UserProfile>(sql, new { EmailAddress = email });
