@@ -31,6 +31,7 @@ namespace ResponsiBoss.Api.Client
 
                     return Task.CompletedTask;
                 };
+
                 FlurlHttp.GlobalSettings.AfterCallAsync = x =>
                 {
                     _logger?.LogDebug($"End Call To {x?.Request?.Url} Which Took {x?.Duration?.TotalSeconds} Seconds.");
