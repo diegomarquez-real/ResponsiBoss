@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiBoss.BlazorServerApp", "ResponsiBoss.BlazorServerApp\ResponsiBoss.BlazorServerApp.csproj", "{23005B9E-F33C-40BD-B8AC-D63EA4A14D59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResponsiBoss.BlazorServerApp", "ResponsiBoss.BlazorServerApp\ResponsiBoss.BlazorServerApp.csproj", "{23005B9E-F33C-40BD-B8AC-D63EA4A14D59}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiClient", "ApiClient", "{2C3B7653-C811-4A40-BE67-C647768E2E69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiBoss.Api.Client", "ResponsiBoss.Api.Client\ResponsiBoss.Api.Client.csproj", "{F894FE49-D993-4E47-B8EB-C0CCDA6D07D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiBoss.Api.Client.Abstractions", "ResponsiBoss.Api.Client.Abstractions\ResponsiBoss.Api.Client.Abstractions.csproj", "{C80BED4D-4E92-4BBC-9312-92474F491B0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiBoss.Api.Client.DependencyInjectionInfrastructure", "ResponsiBoss.Api.Client.DependencyInjectionInfrastructure\ResponsiBoss.Api.Client.DependencyInjectionInfrastructure.csproj", "{F48A8393-6A35-4BEA-B07D-A3F46F880989}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResponsiBoss.Api.Models", "ResponsiBoss.Api.Models\ResponsiBoss.Api.Models.csproj", "{E3DD52C3-C8AF-4F68-9E2E-92C071C0166A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +25,31 @@ Global
 		{23005B9E-F33C-40BD-B8AC-D63EA4A14D59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23005B9E-F33C-40BD-B8AC-D63EA4A14D59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23005B9E-F33C-40BD-B8AC-D63EA4A14D59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F894FE49-D993-4E47-B8EB-C0CCDA6D07D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F894FE49-D993-4E47-B8EB-C0CCDA6D07D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F894FE49-D993-4E47-B8EB-C0CCDA6D07D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F894FE49-D993-4E47-B8EB-C0CCDA6D07D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C80BED4D-4E92-4BBC-9312-92474F491B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C80BED4D-4E92-4BBC-9312-92474F491B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C80BED4D-4E92-4BBC-9312-92474F491B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C80BED4D-4E92-4BBC-9312-92474F491B0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F48A8393-6A35-4BEA-B07D-A3F46F880989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F48A8393-6A35-4BEA-B07D-A3F46F880989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F48A8393-6A35-4BEA-B07D-A3F46F880989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F48A8393-6A35-4BEA-B07D-A3F46F880989}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3DD52C3-C8AF-4F68-9E2E-92C071C0166A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3DD52C3-C8AF-4F68-9E2E-92C071C0166A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3DD52C3-C8AF-4F68-9E2E-92C071C0166A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3DD52C3-C8AF-4F68-9E2E-92C071C0166A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F894FE49-D993-4E47-B8EB-C0CCDA6D07D0} = {2C3B7653-C811-4A40-BE67-C647768E2E69}
+		{C80BED4D-4E92-4BBC-9312-92474F491B0D} = {2C3B7653-C811-4A40-BE67-C647768E2E69}
+		{F48A8393-6A35-4BEA-B07D-A3F46F880989} = {2C3B7653-C811-4A40-BE67-C647768E2E69}
+		{E3DD52C3-C8AF-4F68-9E2E-92C071C0166A} = {2C3B7653-C811-4A40-BE67-C647768E2E69}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F573E947-C7B8-4F88-8712-F8D8EAC79D3C}

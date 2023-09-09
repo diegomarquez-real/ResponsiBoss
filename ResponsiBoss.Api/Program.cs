@@ -17,7 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IUserAuthenticationService, UserAuthenticationService>();
 
-// Implement Dependency Injection Container
+// Implement Dependency Injection Container.
 builder.Services.Init(builder.Configuration);
 
 // Register PasswordHasher for UserProfile.

@@ -1,6 +1,10 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using ResponsiBoss.Api.Client.Abstractions;
+using ResponsiBoss.Api.Client.DependencyInjectionInfrastructure;
 using ResponsiBoss.BlazorServerApp.Data;
+using ResponsiBoss.BlazorServerApp.Identity;
+using ResponsiBoss.BlazorServerApp.Identity.Abstractions;
+using ResponsiBoss.BlazorServerApp.Identity.Providers;
+using ResponsiBoss.BlazorServerApp.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +12,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IApplicationSignInManager, ApplicationSignInManager>();
+builder.Services.AddScoped<IApplicationSignOutManager, ApplicationSignOutManager>();
+builder.Services.AddScoped<IUserClaimService, UserClaimService>();
+builder.Services.AddScoped<IAuthTokenProvider, AuthTokenProvider>();
+
+builder.Services.AddTransient<IApiClientSettings, ApiClientSettings>();
+
+// Implement Dependency Injection Container.
+builder.Services.Init(builder.Configuration);
 
 var app = builder.Build();
 
@@ -20,12 +35,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
-
 app.Run();
