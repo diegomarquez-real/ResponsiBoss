@@ -5,6 +5,7 @@ using ResponsiBoss.BlazorServerApp.Identity;
 using ResponsiBoss.BlazorServerApp.Identity.Abstractions;
 using ResponsiBoss.BlazorServerApp.Identity.Providers;
 using ResponsiBoss.BlazorServerApp.Settings;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,12 @@ builder.Services.AddTransient<IApiClientSettings, ApiClientSettings>();
 // Implement Dependency Injection Container.
 builder.Services.Init(builder.Configuration);
 
+// Configure Serilog.
+builder.Host.UseSerilog((context, config) =>
+{
+    config.ReadFrom.Configuration(context.Configuration);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,6 +41,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
