@@ -49,17 +49,21 @@
         {
             var result = await applicationSignInManager.SignInResultAsync(userLoginModel.Email, userLoginModel.Password);
 
-            var userSession = new UserSession() { Email = userLoginModel.Email, Password = userLoginModel.Password };
-
-            var userSessionId = Guid.NewGuid();
-
-            customStorage.UserSession.SaveItemEncrypted(userSessionId, userSession);
-
             if(result.IsSuccess)
             {
-                StateHasChanged();
+                validationSummary = String.Empty;
+
+                var userSession = new UserSession() { Email = userLoginModel.Email, Password = userLoginModel.Password };
+
+                var userSessionId = Guid.NewGuid();
+
+                customStorage.UserSession.SaveItemEncrypted(userSessionId, userSession);
 
                 navigationManager.NavigateTo($"User/Login?key={userSessionId}", true);
+            }
+            else
+            {
+                validationSummary = result.ErrorMessage;
             }
         }
     }
