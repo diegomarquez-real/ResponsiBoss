@@ -18,7 +18,7 @@ namespace ResponsiBoss.BlazorServerApp.Identity.Providers
         }
         public AuthTokenModel GetAuthToken()
         {
-            //if Auth Token Has Been Explicitly Set, We'll Use That, Other Wise Get It From The UserClaim Service.
+            // If Auth Token Has Been Explicitly Set, We'll Use That, Other Wise Get It From The UserClaim Service.
             if (_authToken == null)
             {
                 return new AuthTokenModel()

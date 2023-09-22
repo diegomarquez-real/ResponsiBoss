@@ -1,19 +1,29 @@
+using Serilog;
+using MudBlazor.Services;
 using ResponsiBoss.Api.Client.Abstractions;
 using ResponsiBoss.Api.Client.DependencyInjectionInfrastructure;
-using ResponsiBoss.BlazorServerApp.Data;
 using ResponsiBoss.BlazorServerApp.Identity;
 using ResponsiBoss.BlazorServerApp.Identity.Abstractions;
-using ResponsiBoss.BlazorServerApp.Identity.Providers;
 using ResponsiBoss.BlazorServerApp.Settings;
-using Serilog;
+using ResponsiBoss.BlazorServerApp.Identity.Providers;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add Authentication.
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(config =>
+{
+    config.Cookie.Name = "ResponsiBossBlazorServerUserLoginCookie";
+    config.LoginPath = "/Login";
+});
+
+// Add Services To The Container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddMudServices();
+
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddControllers(options => options.EnableEndpointRouting = false);
 
 builder.Services.AddScoped<IApplicationSignInManager, ApplicationSignInManager>();
 builder.Services.AddScoped<IApplicationSignOutManager, ApplicationSignOutManager>();
@@ -21,6 +31,8 @@ builder.Services.AddScoped<IUserClaimService, UserClaimService>();
 builder.Services.AddScoped<IAuthTokenProvider, AuthTokenProvider>();
 
 builder.Services.AddTransient<IApiClientSettings, ApiClientSettings>();
+
+builder.Services.AddSingleton<CustomStorage>();
 
 // Implement Dependency Injection Container.
 builder.Services.Init(builder.Configuration);
@@ -42,9 +54,17 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseSerilogRequestLogging();
+
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
+
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
 app.Run();

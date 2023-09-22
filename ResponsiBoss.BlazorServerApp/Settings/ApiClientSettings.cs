@@ -9,9 +9,11 @@ namespace ResponsiBoss.BlazorServerApp.Settings
         private readonly IAuthTokenProvider _authTokenProvider;
         private readonly IOptions<AppOptions> _appOptions;
 
-        public ApiClientSettings(Api.Client.Abstractions.IAuthTokenProvider authTokenProvider)
+        public ApiClientSettings(Api.Client.Abstractions.IAuthTokenProvider authTokenProvider,
+            IOptions<AppOptions> appOptions)
         {
             _authTokenProvider = authTokenProvider;
+            _appOptions = appOptions;
         }
 
         public string BaseUrl { get { return _appOptions.Value.ApiBaseUrl; } }

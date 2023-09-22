@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResponsiBoss.BlazorServerAp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiClient", "ApiClient", "{2C3B7653-C811-4A40-BE67-C647768E2E69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiBoss.Api.Client", "ResponsiBoss.Api.Client\ResponsiBoss.Api.Client.csproj", "{F894FE49-D993-4E47-B8EB-C0CCDA6D07D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResponsiBoss.Api.Client", "ResponsiBoss.Api.Client\ResponsiBoss.Api.Client.csproj", "{F894FE49-D993-4E47-B8EB-C0CCDA6D07D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiBoss.Api.Client.Abstractions", "ResponsiBoss.Api.Client.Abstractions\ResponsiBoss.Api.Client.Abstractions.csproj", "{C80BED4D-4E92-4BBC-9312-92474F491B0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResponsiBoss.Api.Client.Abstractions", "ResponsiBoss.Api.Client.Abstractions\ResponsiBoss.Api.Client.Abstractions.csproj", "{C80BED4D-4E92-4BBC-9312-92474F491B0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiBoss.Api.Client.DependencyInjectionInfrastructure", "ResponsiBoss.Api.Client.DependencyInjectionInfrastructure\ResponsiBoss.Api.Client.DependencyInjectionInfrastructure.csproj", "{F48A8393-6A35-4BEA-B07D-A3F46F880989}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResponsiBoss.Api.Client.DependencyInjectionInfrastructure", "ResponsiBoss.Api.Client.DependencyInjectionInfrastructure\ResponsiBoss.Api.Client.DependencyInjectionInfrastructure.csproj", "{F48A8393-6A35-4BEA-B07D-A3F46F880989}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResponsiBoss.Api.Models", "ResponsiBoss.Api.Models\ResponsiBoss.Api.Models.csproj", "{E3DD52C3-C8AF-4F68-9E2E-92C071C0166A}"
 EndProject

@@ -10,6 +10,7 @@ namespace ResponsiBoss.BlazorServerApp.Identity
 {
     public class ApplicationSignInManager : IApplicationSignInManager
     {
+
         private readonly IUserClaimService _userClaimService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserClient _userClient;
@@ -26,7 +27,21 @@ namespace ResponsiBoss.BlazorServerApp.Identity
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<AuthenticationResult> SignInAsync(string email, string password)
+        public async Task SignInAsync(string email, string password)
+        {
+            var authToken = await _userClient.AuthenticateAsync(new UserLoginModel() { Email = email, Password = password });
+
+            var identity = CreateIdentity(authToken.UserId, email, authToken.Token);
+
+            await _httpContextAccessor.HttpContext.SignOutAsync();
+
+            await _httpContextAccessor.HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(identity),
+                new AuthenticationProperties() { IsPersistent = false });
+        }
+
+        public async Task<AuthenticationResult> SignInResultAsync(string email, string password)
         {
             bool isAuthenticated = false;
 
@@ -50,16 +65,6 @@ namespace ResponsiBoss.BlazorServerApp.Identity
             {
                 return new AuthenticationResult("Username Or Password Is Not Correct.");
             }
-
-            var identity = CreateIdentity(authToken.UserId, email, authToken.Token);
-
-            await _httpContextAccessor.HttpContext.SignOutAsync();
-
-            await _httpContextAccessor.HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(identity),
-                new AuthenticationProperties() { IsPersistent = false });
-
 
             return new AuthenticationResult();
         }

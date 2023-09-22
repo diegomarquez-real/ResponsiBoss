@@ -28,7 +28,7 @@ namespace ResponsiBoss.Data
                             FROM UserProfile AS u
                             WHERE u.EmailAddress = @EmailAddress";
 
-                return await base.DbConnection.QuerySingleAsync<UserProfile>(sql, new { EmailAddress = email });
+                return await base.DbConnection.QuerySingleOrDefaultAsync<UserProfile>(sql, new { EmailAddress = email });
             }
             catch (Exception) { throw; }
         }
