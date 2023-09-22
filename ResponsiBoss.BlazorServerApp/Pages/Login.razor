@@ -52,13 +52,9 @@
             if(result.IsSuccess)
             {
                 validationSummary = String.Empty;
-
                 var userSession = new UserSession() { Email = userLoginModel.Email, Password = userLoginModel.Password };
-
                 var userSessionId = Guid.NewGuid();
-
                 customStorage.UserSession.SaveItemEncrypted(userSessionId, userSession);
-
                 navigationManager.NavigateTo($"User/Login?key={userSessionId}", true);
             }
             else
