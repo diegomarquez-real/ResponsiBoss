@@ -67,7 +67,7 @@ namespace ResponsiBoss.BlazorServerApp.Identity
             var bearerToken = this.GetCurrentBearerToken();
 
             if (String.IsNullOrEmpty(bearerToken))
-                throw new ApplicationException("User Claims Failed To Provide API Access Code");
+                throw new ApplicationException("User Claims Failed To Provide API Access Code.");
             else
                 return bearerToken;
         }

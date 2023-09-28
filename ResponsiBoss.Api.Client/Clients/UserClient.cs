@@ -1,6 +1,7 @@
 ﻿using Flurl.Http;
 using Microsoft.Extensions.Logging;
 using ResponsiBoss.Api.Models;
+using ResponsiBoss.Api.Models.Create;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,13 +20,21 @@ namespace ResponsiBoss.Api.Client
 
         protected override string BaseSegment => "Users";
 
-        public Task<AuthTokenModel> AuthenticateAsync(UserLoginModel userLoginModel)
+        public async Task<AuthTokenModel> AuthenticateAsync(UserLoginModel userLoginModel)
         {
-            return UrlBuilderForAnonymous()
+            return await UrlBuilderForAnonymous()
                .AppendPathSegment("Authenticate")
                .AllowHttpStatus(System.Net.HttpStatusCode.Unauthorized)
                .PostJsonAsync(userLoginModel)
                .ReceiveJson<AuthTokenModel>();
+        }
+
+        public async Task<Guid> CreateUserAsync(CreateUserModel createUserModel)
+        {
+            return await UrlBuilderForAnonymous()
+                .AllowHttpStatus(System.Net.HttpStatusCode.Unauthorized)
+                .PostJsonAsync(createUserModel)
+                .ReceiveJson<Guid>();
         }
     }
 }

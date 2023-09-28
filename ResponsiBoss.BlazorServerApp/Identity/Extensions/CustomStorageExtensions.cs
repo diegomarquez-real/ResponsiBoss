@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace ResponsiBoss.BlazorServerApp//.Identity.Extensions
 {
-    public static class SessionStorageExtensions
+    public static class CustomStorageExtensions
     {
         public static void SaveItemEncrypted<T>(this Dictionary<Guid, string> cutomStorage, Guid key, T item)
         {
