@@ -4,6 +4,7 @@
 @inject CustomStorage customStorage
 @inject IApplicationSignInManager applicationSignInManager
 @inject IKeyInterceptor keyInterceptor
+@inject ISnackbar snackbar
 @using System.Text.RegularExpressions
 @using MudBlazor.Services;
 @using ResponsiBoss.Api.Models;
@@ -18,7 +19,6 @@
             <MudPaper Class="pa-4">
             <MudForm Model="input" @ref="form" Validation="new LoginValidator().ValidateValue"
                      UserAttributes="@(new Dictionary<string, object>() { {"id", "login-form"} })">
-                    <MudText Color="@Color.Error">@validationSummary</MudText>
                     <MudTextField T="string" Label="Email" @bind-Value="input.Email"
                                     For="@(() => input.Email)"
                                     Immediate="true" />
@@ -40,7 +40,6 @@
 @code {
     MudForm form;
     InputModel input = new();
-    string validationSummary = String.Empty;
 
     private async Task SubmitAsync()
     {
@@ -52,7 +51,6 @@
 
             if(result.IsSuccess)
             {
-                validationSummary = String.Empty;
                 var userSession = new UserSession() { Email = input.Email, Password = input.Password };
                 var userSessionId = Guid.NewGuid();
                 customStorage.UserSession.SaveItemEncrypted(userSessionId, userSession);
@@ -60,7 +58,8 @@
             }
             else
             {
-                validationSummary = result.ErrorMessage;
+                snackbar.Clear();
+                snackbar.Add(result.ErrorMessage, Severity.Error);
                 StateHasChanged();
             }
         }

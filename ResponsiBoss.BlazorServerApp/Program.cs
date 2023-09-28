@@ -21,7 +21,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
-builder.Services.AddMudBlazorKeyInterceptor();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers(options => options.EnableEndpointRouting = false);

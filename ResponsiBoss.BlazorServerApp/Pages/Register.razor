@@ -3,6 +3,7 @@
 @inject NavigationManager navigationManager
 @inject IUserClient userClient
 @inject IKeyInterceptor keyInterceptor
+@inject ISnackbar snackbar
 @using System.Text.RegularExpressions
 @using MudBlazor.Services;
 @using ResponsiBoss.Api.Client.Abstractions;
@@ -71,8 +72,19 @@
                 LastName = input.LastName,
                 PhoneNumber = input.PhoneNumber ?? String.Empty
             };
-            await userClient.CreateUserAsync(createUserModel);
-            navigationManager.NavigateTo("Login", false);
+
+            try
+            {
+                await userClient.CreateUserAsync(createUserModel);
+                snackbar.Clear();
+                snackbar.Add("Successfully Created User.", Severity.Success);
+                navigationManager.NavigateTo("Login", false);
+            }
+            catch (Exception)
+            {
+                snackbar.Clear();
+                snackbar.Add("Failed To Create User.", Severity.Error);
+            }     
         }
     }
 
