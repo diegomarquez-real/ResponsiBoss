@@ -1,0 +1,100 @@
+﻿@layout LoginLayout
+@page "/Login"
+@inject NavigationManager navigationManager
+@inject CustomStorage customStorage
+@inject IApplicationSignInManager applicationSignInManager
+@inject IKeyInterceptor keyInterceptor
+@inject ISnackbar snackbar
+@using System.Text.RegularExpressions
+@using MudBlazor.Services;
+@using ResponsiBoss.Api.Models;
+@using ResponsiBoss.BlazorServerApp.Identity.Abstractions;
+@using ResponsiBoss.BlazorServerApp.Identity.Providers;
+@using ResponsiBoss.BlazorServerApp.Identity;
+@using ResponsiBoss.BlazorServerApp.Validators;
+
+<MudGrid>
+    <MudItem xs="1" sm="2" md="3" lg="4" xl="4" xxl="5"></MudItem>
+    <MudItem xs="10" sm="8" md="6" lg="4" xl="4" xxl="2">
+            <MudPaper Class="pa-4">
+            <MudForm Model="input" @ref="form" Validation="new LoginValidator().ValidateValue"
+                     UserAttributes="@(new Dictionary<string, object>() { {"id", "login-form"} })">
+                    <MudTextField T="string" Label="Email" @bind-Value="input.Email"
+                                    For="@(() => input.Email)"
+                                    Immediate="true" />
+                    <MudTextField T="string" Label="Password" @bind-Value="input.Password"
+                                    For="@(() => input.Password)"
+                                    Immediate="true"
+                                    InputType="InputType.Password" />
+                    <div class="d-flex mt-3">
+                        <MudLink Href="/Register" Typo="Typo.body2">Create New Account</MudLink>
+                        <MudButton Variant="Variant.Filled " Class="ms-auto" Color="Color.Primary"
+                                   DisableElevation="true" OnClick="SubmitAsync">Login</MudButton>
+                    </div>
+                </MudForm>
+            </MudPaper>
+        </MudItem>
+    <MudItem xs="1" sm="2" md="3" lg="4" xl="4" xxl="5"></MudItem>
+</MudGrid>
+
+@code {
+    MudForm form;
+    InputModel input = new();
+
+    private async Task SubmitAsync()
+    {
+        await form.Validate();
+
+        if(form.IsValid)
+        {
+            var result = await applicationSignInManager.SignInResultAsync(input.Email, input.Password);
+
+            if(result.IsSuccess)
+            {
+                var userSession = new UserSession() { Email = input.Email, Password = input.Password };
+                var userSessionId = Guid.NewGuid();
+                customStorage.UserSession.SaveItemEncrypted(userSessionId, userSession);
+                navigationManager.NavigateTo($"User/Login?key={userSessionId}", true);
+            }
+            else
+            {
+                snackbar.Clear();
+                snackbar.Add(result.ErrorMessage, Severity.Error);
+                StateHasChanged();
+            }
+        }
+    }
+
+    public class InputModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await keyInterceptor.Connect("login-form", new KeyInterceptorOptions()
+            {
+                TargetClass = "mud-input",
+                Keys = new List<KeyOptions>()
+                {
+                    new KeyOptions() { Key = "Enter", PreventDown = "key+none", SubscribeDown = true }
+                }
+            });
+
+            keyInterceptor.KeyDown += KeyDown;
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public async void KeyDown(KeyboardEventArgs e)
+    {
+        if (!e.Key.Equals("Enter", StringComparison.OrdinalIgnoreCase))
+            return;
+
+        await this.SubmitAsync();
+    }
+}

@@ -94,6 +94,7 @@ namespace ResponsiBoss.Api.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost(Name = "CreateUser")]
         [ProducesResponseType(typeof(Guid), 201)]
         [ProducesResponseType(typeof(BadRequestResult), 400)]

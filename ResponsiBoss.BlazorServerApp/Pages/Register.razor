@@ -1,0 +1,125 @@
+﻿@layout LoginLayout
+@page "/Register"
+@inject NavigationManager navigationManager
+@inject IUserClient userClient
+@inject IKeyInterceptor keyInterceptor
+@inject ISnackbar snackbar
+@using System.Text.RegularExpressions
+@using MudBlazor.Services;
+@using ResponsiBoss.Api.Client.Abstractions;
+@using ResponsiBoss.Api.Models.Create;
+@using ResponsiBoss.BlazorServerApp.Validators;
+
+<MudGrid>
+    <MudItem xs="1" sm="2" md="3" lg="4" xl="4" xxl="5"></MudItem>
+    <MudItem xs="10" sm="8" md="6" lg="4" xl="4" xxl="2">
+        <MudPaper Class="pa-4">
+            <MudForm Model="input" @ref="form" Validation="new RegisterValidator().ValidateValue"
+                     UserAttributes="@(new Dictionary<string, object>() { {"id", "register-form"} })">
+                <MudTextField T="string" Label="Email" @bind-Value="input.Email"
+                              For="@(() => input.Email)"
+                              Immediate="true" />
+                <MudTextField T="string" Label="First Name" @bind-Value="input.FirstName"
+                              For="@(() => input.FirstName)"
+                              Immediate="true" />
+                <MudTextField T="string" Label="Last Name" @bind-Value="input.LastName"
+                              For="@(() => input.LastName)"
+                              Immediate="true" />
+                <MudTextField T="string" Label="Phone Number" @bind-Value="input.PhoneNumber"
+                              For="@(() => input.PhoneNumber)"
+                              Immediate="true" />
+                <MudTextField T="string" Label="Password" @bind-Value="input.Password"
+                              For="@(() => input.Password)"
+                              Immediate="true"
+                              InputType="InputType.Password" />
+                <MudTextField T="string" Label="Confirm Password" @bind-Value="input.ConfirmPassword"
+                              For="@(() => input.ConfirmPassword)"
+                              Immediate="true"
+                              InputType="InputType.Password" />
+                <div class="d-flex align-center justify-content-center mt-3">
+                </div>
+                <div class="d-flex mt-3">
+                    <MudLink Href="/Login" Typo="Typo.body2"> 
+                        <MudIcon Icon="@Icons.Material.Filled.ArrowBack" Size="Size.Small" />
+                        Back to login
+                    </MudLink>
+                    <MudButton Variant="Variant.Filled" Class="ms-auto" Color="Color.Primary"
+                               DisableElevation="true" OnClick="SubmitAsync">Register</MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="1" sm="2" md="3" lg="4" xl="4" xxl="5"></MudItem>
+</MudGrid>
+
+@code {
+    MudForm form;
+    InputModel input = new();
+
+    private async Task SubmitAsync()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            var createUserModel = new CreateUserModel()
+            {
+                EmailAddress = input.Email,
+                Password = input.Password,
+                FirstName = input.FirstName,
+                LastName = input.LastName,
+                PhoneNumber = input.PhoneNumber ?? String.Empty
+            };
+
+            try
+            {
+                await userClient.CreateUserAsync(createUserModel);
+                snackbar.Clear();
+                snackbar.Add("Successfully Created User.", Severity.Success);
+                navigationManager.NavigateTo("Login", false);
+            }
+            catch (Exception)
+            {
+                snackbar.Clear();
+                snackbar.Add("Failed To Create User.", Severity.Error);
+            }     
+        }
+    }
+
+    public class InputModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await keyInterceptor.Connect("register-form", new KeyInterceptorOptions()
+                {
+                    TargetClass = "mud-input",
+                    Keys = new List<KeyOptions>()
+                {
+                    new KeyOptions() { Key = "Enter", PreventDown = "key+none", SubscribeDown = true }
+                }
+                });
+
+            keyInterceptor.KeyDown += KeyDown;
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public async void KeyDown(KeyboardEventArgs e)
+    {
+        if (!e.Key.Equals("Enter", StringComparison.OrdinalIgnoreCase))
+            return;
+
+        await this.SubmitAsync();
+    }
+}
