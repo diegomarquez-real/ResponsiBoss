@@ -16,7 +16,6 @@
         <MudPaper Class="pa-4">
             <MudForm Model="input" @ref="form" Validation="new RegisterValidator().ValidateValue"
                      UserAttributes="@(new Dictionary<string, object>() { {"id", "register-form"} })">
-                <MudText Color="@Color.Error">@validationSummary</MudText>
                 <MudTextField T="string" Label="Email" @bind-Value="input.Email"
                               For="@(() => input.Email)"
                               Immediate="true" />
@@ -56,7 +55,6 @@
 @code {
     MudForm form;
     InputModel input = new();
-    string validationSummary = String.Empty;
 
     private async Task SubmitAsync()
     {
