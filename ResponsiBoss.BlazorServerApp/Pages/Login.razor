@@ -51,14 +51,10 @@
 
             if(result.IsSuccess)
             {
-                var userSession = new UserSession() { Email = input.Email, Password = input.Password };
-                var userSessionId = Guid.NewGuid();
-                customStorage.UserSession.SaveItemEncrypted(userSessionId, userSession);
-                navigationManager.NavigateTo($"User/Login?key={userSessionId}", true);
+                navigationManager.NavigateTo($"User/Login?key={result.AuthTokenTempId}", true);
             }
             else
             {
-                snackbar.Clear();
                 snackbar.Add(result.ErrorMessage, Severity.Error);
                 StateHasChanged();
             }

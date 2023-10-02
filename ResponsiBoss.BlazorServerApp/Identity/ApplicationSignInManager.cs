@@ -13,25 +13,26 @@ namespace ResponsiBoss.BlazorServerApp.Identity
 
         private readonly IUserClaimService _userClaimService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly CustomStorage _customStorage;
         private readonly IUserClient _userClient;
         private readonly ILogger<ApplicationSignInManager> _logger;
 
         public ApplicationSignInManager(IUserClient userClient,
             ILogger<ApplicationSignInManager> logger,
             IUserClaimService userClaimService,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            CustomStorage customStorage)
         {
             _userClient = userClient;
             _logger = logger;
             _userClaimService = userClaimService;
             _httpContextAccessor = httpContextAccessor;
+            _customStorage = customStorage;
         }
 
-        public async Task SignInAsync(string email, string password)
+        public async Task SignInAsync(AuthTokenModel authTokenModel)
         {
-            var authToken = await _userClient.AuthenticateAsync(new UserLoginModel() { Email = email, Password = password });
-
-            var identity = CreateIdentity(authToken.UserId, email, authToken.Token);
+            var identity = CreateIdentity(authTokenModel.UserId, authTokenModel.Email, authTokenModel.Token);
 
             await _httpContextAccessor.HttpContext.SignOutAsync();
 
@@ -45,14 +46,13 @@ namespace ResponsiBoss.BlazorServerApp.Identity
         {
             bool isAuthenticated = false;
 
-            Api.Models.AuthTokenModel authToken;
+            AuthTokenModel authTokenModel;
 
             try
             {
-                authToken = await _userClient.AuthenticateAsync(new UserLoginModel() { Email = email, Password = password });
+                authTokenModel = await _userClient.AuthenticateAsync(new UserLoginModel() { Email = email, Password = password });
 
-                isAuthenticated = !string.IsNullOrEmpty(authToken?.Token);
-
+                isAuthenticated = !string.IsNullOrEmpty(authTokenModel?.Token);
             }
             catch (Exception ex)
             {
@@ -66,7 +66,11 @@ namespace ResponsiBoss.BlazorServerApp.Identity
                 return new AuthenticationResult("Username Or Password Is Not Correct.");
             }
 
-            return new AuthenticationResult();
+            var authenticationResult = new AuthenticationResult() { AuthTokenTempId = Guid.NewGuid() };
+
+            _customStorage.UserSession.SaveItemEncrypted(authenticationResult.AuthTokenTempId.Value, authTokenModel);
+
+            return authenticationResult;
         }
 
         private ClaimsIdentity CreateIdentity(Guid userId, string email, string bearerToken)
