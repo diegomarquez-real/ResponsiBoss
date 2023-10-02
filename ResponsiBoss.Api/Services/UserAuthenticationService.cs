@@ -53,6 +53,7 @@ namespace ResponsiBoss.Api.Services
             return new Api.Models.AuthTokenModel()
             {
                 UserId = user.UserId,
+                Email = user.EmailAddress,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
             };
         } 

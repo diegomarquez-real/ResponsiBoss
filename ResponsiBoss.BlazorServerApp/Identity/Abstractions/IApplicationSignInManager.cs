@@ -1,10 +1,11 @@
-﻿using ResponsiBoss.BlazorServerApp.Identity.Results;
+﻿using ResponsiBoss.Api.Models;
+using ResponsiBoss.BlazorServerApp.Identity.Results;
 
 namespace ResponsiBoss.BlazorServerApp.Identity.Abstractions
 {
     public interface IApplicationSignInManager
     {
-        Task SignInAsync(string email, string password);
+        Task SignInAsync(AuthTokenModel authTokenModel);
         Task<AuthenticationResult> SignInResultAsync(string email, string password);
     }
 }

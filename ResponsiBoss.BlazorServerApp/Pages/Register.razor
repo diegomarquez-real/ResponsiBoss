@@ -74,13 +74,11 @@
             try
             {
                 await userClient.CreateUserAsync(createUserModel);
-                snackbar.Clear();
                 snackbar.Add("Successfully Created User.", Severity.Success);
                 navigationManager.NavigateTo("Login", false);
             }
             catch (Exception)
             {
-                snackbar.Clear();
                 snackbar.Add("Failed To Create User.", Severity.Error);
             }     
         }

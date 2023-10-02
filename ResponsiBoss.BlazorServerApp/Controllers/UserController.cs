@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ResponsiBoss.Api.Models;
 using ResponsiBoss.BlazorServerApp.Identity;
 using ResponsiBoss.BlazorServerApp.Identity.Abstractions;
 
@@ -23,15 +24,14 @@ namespace ResponsiBoss.BlazorServerApp.Controllers
         [HttpGet]
         public async Task<IActionResult> LoginAsync(Guid key)
         {
-            var userSession = _customStorage.UserSession.ReadEncryptedItem<UserSession>(key);
+            var authTokenModel = _customStorage.UserSession.ReadEncryptedItem<AuthTokenModel>(key);
 
-            if(userSession == null)
+            if(authTokenModel == null)
                 return Redirect("/Login");
 
-            await _applicationSignInManager.SignInAsync(userSession.Email, userSession.Password);
+            await _applicationSignInManager.SignInAsync(authTokenModel);
 
-            if (userSession != null)
-                _customStorage.UserSession.Remove(key);
+            _customStorage.UserSession.Remove(key);
 
             return Redirect("/");
         }

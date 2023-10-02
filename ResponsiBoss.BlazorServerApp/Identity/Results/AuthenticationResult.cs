@@ -9,5 +9,6 @@
 
         public String ErrorMessage { get; private set; }
         public Boolean IsSuccess => String.IsNullOrEmpty(ErrorMessage);
+        public Guid? AuthTokenTempId { get; set; }
     }
 }
