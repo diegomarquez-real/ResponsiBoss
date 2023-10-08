@@ -18,6 +18,21 @@ using PetaPoco;
 
 namespace ResponsiBoss.Data.Models
 {
+	[TableName("dbo.Appointment")]
+	[PrimaryKey("AppointmentId")]
+    public partial class Appointment  
+    {
+        [Key] 
+		public Guid AppointmentId { get; set; }
+		public string Name { get; set; }
+		public string Notes { get; set; }
+		public Microsoft.SqlServer.Types.SqlGeography Location { get; set; }
+		public DateTime CreatedOn { get; set; }
+		public DateTime? UpdatedOn { get; set; }
+		public Guid CreatedBy { get; set; }
+		public Guid? UpdatedBy { get; set; }
+	}
+    
 	[TableName("dbo.SchemaVersions")]
 	[PrimaryKey("Id")]
     public partial class SchemaVersion  
