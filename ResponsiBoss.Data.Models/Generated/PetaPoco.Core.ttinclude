@@ -195,7 +195,7 @@ string CheckNullable(Column col)
     if(col.IsNullable && 
 		col.PropertyType !="byte[]" && 
 		col.PropertyType !="string" &&
-		col.PropertyType !="Microsoft.SqlServer.Types.SqlGeography" &&
+		//col.PropertyType !="Microsoft.SqlServer.Types.SqlGeography" &&  //Allowing SqlGeography To Be Null.
 		col.PropertyType !="Microsoft.SqlServer.Types.SqlGeometry"
 		)
         result="?";

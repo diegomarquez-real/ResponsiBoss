@@ -14,9 +14,18 @@ namespace ResponsiBoss.Data
     public abstract class GenericRepository<TEntity, TPrimaryKeyType> : Abstractions.IGenericRepository<TEntity, TPrimaryKeyType> where TEntity : class
     {
         protected IDbConnection DbConnection;
-        public GenericRepository(IDataContext dataContext)
+        private readonly IUserContext _userContext;
+
+        protected bool StampWithCreatedBy { get; set; } = true;
+        protected bool StampWithUpdatedBy { get; set; } = true;
+        protected bool StampWithCreatedOn { get; set; } = true;
+        protected bool StampWithUpdatedOn { get; set; } = true;
+
+        public GenericRepository(IDataContext dataContext,
+            IUserContext userContext)
         {
             this.DbConnection = dataContext.CreateConnection();
+            _userContext = userContext;
         }
 
         public async Task<TEntity> FindByIdAsync(TPrimaryKeyType entityId)
@@ -48,6 +57,9 @@ namespace ResponsiBoss.Data
         {
             try
             {
+                this.TrySetCreatedBy(entity);
+                this.TrySetCreatedDate(entity);
+
                 string sql = @$"INSERT INTO {GenericExtensions.GetTableName<TEntity>()} ({GenericExtensions.GetColumns<TEntity>(excludeKey: true)})
                                 OUTPUT INSERTED.*
                                 VALUES ({GenericExtensions.GetPropertyNames<TEntity>(excludeKey: true)})";
@@ -61,6 +73,9 @@ namespace ResponsiBoss.Data
         {
             try
             {
+                this.TrySetUpdatedBy(entity);
+                this.TrySetUpdatedDate(entity);
+
                 string sql = @$"UPDATE {GenericExtensions.GetTableName<TEntity>()} SET ";
 
                 foreach (var property in GenericExtensions.GetProperties<TEntity>(excludeKey: true))
@@ -91,5 +106,58 @@ namespace ResponsiBoss.Data
             }
             catch (Exception) { throw; }
         }
+
+        #region Additional Functionality
+
+        protected void TrySetCreatedBy(object entity)
+        {
+            if (!StampWithCreatedBy) 
+                return;
+
+            var p = entity.GetType().GetProperty("CreatedBy");
+
+            if (p == null)
+                return;
+
+            p.SetValue(entity, _userContext.CurrentUserIdentifier);
+        }
+
+        protected void TrySetUpdatedBy(object entity)
+        {
+            if (!StampWithUpdatedBy) return;
+            var p = entity.GetType().GetProperty("UpdatedBy");
+
+            if (p == null)
+                return;
+
+            p.SetValue(entity, _userContext.CurrentUserIdentifier);
+        }
+
+        protected void TrySetCreatedDate(object entity)
+        {
+            if (!StampWithCreatedOn) 
+                return;
+
+            var p = entity.GetType().GetProperty("CreatedOn");
+
+            if (p == null)
+                return;
+
+            p.SetValue(entity, DateTime.UtcNow);
+        }
+
+        protected void TrySetUpdatedDate(object entity)
+        {
+            if (!StampWithUpdatedOn) return;
+
+            var p = entity.GetType().GetProperty("UpdatedOn");
+
+            if (p == null)
+                return;
+
+            p.SetValue(entity, DateTime.UtcNow);
+        }
+
+        #endregion
     }
 }

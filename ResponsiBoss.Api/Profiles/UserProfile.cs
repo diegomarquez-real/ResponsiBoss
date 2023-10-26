@@ -2,7 +2,7 @@
 
 namespace ResponsiBoss.Api.Profiles
 {
-    public class UserProfile: Profile
+    public class UserProfile : Profile
     {
         public UserProfile()
         {
