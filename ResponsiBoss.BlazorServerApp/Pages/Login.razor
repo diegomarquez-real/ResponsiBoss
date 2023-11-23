@@ -51,10 +51,9 @@
         var result = await applicationSignInManager.SignInResultAsync(input.Email, input.Password);
 
         if (result.IsSuccess)
-            navigationManager.NavigateTo($"User/Login?key={result.AuthTokenTempId}", true);
+            navigationManager.NavigateTo($"User/Login?key={result.AuthTokenTempId}", false);
 
         snackbar.Add(result.ErrorMessage, Severity.Error);
-        StateHasChanged();
     }
 
     public class InputModel
@@ -65,19 +64,19 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            await keyInterceptor.Connect("login-form", new KeyInterceptorOptions()
-            {
-                TargetClass = "mud-input",
-                Keys = new List<KeyOptions>()
-                {
-                    new KeyOptions() { Key = "Enter", PreventDown = "key+none", SubscribeDown = true }
-                }
-            });
+        if (!firstRender)
+            return;
 
-            keyInterceptor.KeyDown += KeyDown;
-        }
+        await keyInterceptor.Connect("login-form", new KeyInterceptorOptions()
+        {
+            TargetClass = "mud-input",
+            Keys = new List<KeyOptions>()
+            {
+                new KeyOptions() { Key = "Enter", PreventDown = "key+none", SubscribeDown = true }
+            }
+        });
+
+        keyInterceptor.KeyDown += KeyDown;
 
         await base.OnAfterRenderAsync(firstRender);
     }

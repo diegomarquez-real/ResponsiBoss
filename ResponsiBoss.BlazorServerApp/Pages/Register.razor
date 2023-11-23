@@ -58,28 +58,30 @@
     {
         await form.Validate();
 
-        if (form.IsValid)
-        {
-            var createUserModel = new CreateUserModel()
-            {
-                EmailAddress = input.Email,
-                Password = input.Password,
-                FirstName = input.FirstName,
-                LastName = input.LastName,
-                PhoneNumber = input.PhoneNumber ?? String.Empty
-            };
+        if (!form.IsValid)
+            return;
 
-            try
-            {
-                await userClient.CreateUserAsync(createUserModel);
-                snackbar.Add("Successfully Created User.", Severity.Success);
-                navigationManager.NavigateTo("Login", false);
-            }
-            catch (Exception)
-            {
-                snackbar.Add("Failed To Create User.", Severity.Error);
-            }     
+        var createUserModel = new CreateUserModel()
+        {
+            EmailAddress = input.Email,
+            Password = input.Password,
+            FirstName = input.FirstName,
+            LastName = input.LastName,
+            PhoneNumber = input.PhoneNumber ?? String.Empty
+        };
+
+        try
+        {
+            await userClient.CreateUserAsync(createUserModel);
+
+            snackbar.Add("Successfully Created User.", Severity.Success);
+
+            navigationManager.NavigateTo("Login", false);
         }
+        catch (Exception)
+        {
+            snackbar.Add("Failed To Create User.", Severity.Error);
+        }     
     }
 
     public class InputModel
@@ -94,19 +96,19 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            await keyInterceptor.Connect("register-form", new KeyInterceptorOptions()
-                {
-                    TargetClass = "mud-input",
-                    Keys = new List<KeyOptions>()
-                {
-                    new KeyOptions() { Key = "Enter", PreventDown = "key+none", SubscribeDown = true }
-                }
-                });
+        if (!firstRender)
+            return;
 
-            keyInterceptor.KeyDown += KeyDown;
-        }
+        await keyInterceptor.Connect("register-form", new KeyInterceptorOptions()
+        {
+            TargetClass = "mud-input",
+            Keys = new List<KeyOptions>()
+            {
+                new KeyOptions() { Key = "Enter", PreventDown = "key+none", SubscribeDown = true }
+            }
+        });
+
+        keyInterceptor.KeyDown += KeyDown;
 
         await base.OnAfterRenderAsync(firstRender);
     }
