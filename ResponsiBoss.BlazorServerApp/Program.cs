@@ -7,6 +7,8 @@ using ResponsiBoss.BlazorServerApp.Identity.Abstractions;
 using ResponsiBoss.BlazorServerApp.Settings;
 using ResponsiBoss.BlazorServerApp.Identity.Providers;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ResponsiBoss.BlazorServerApp.Services.Abstractions;
+using ResponsiBoss.BlazorServerApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,7 @@ builder.Services.AddScoped<IUserClaimService, UserClaimService>();
 builder.Services.AddScoped<IAuthTokenProvider, AuthTokenProvider>();
 
 builder.Services.AddTransient<IApiClientSettings, ApiClientSettings>();
+builder.Services.AddTransient<IKeyInterceptorService, KeyInterceptorService>();
 
 builder.Services.AddSingleton<CustomStorage>();
 
