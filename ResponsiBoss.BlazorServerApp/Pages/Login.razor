@@ -3,7 +3,7 @@
 @inject NavigationManager navigationManager
 @inject CustomStorage customStorage
 @inject IApplicationSignInManager applicationSignInManager
-@inject IKeyInterceptor keyInterceptor
+@inject IKeyInterceptorService keyInterceptorService
 @inject ISnackbar snackbar
 @using System.Text.RegularExpressions
 @using MudBlazor.Services;
@@ -11,6 +11,7 @@
 @using ResponsiBoss.BlazorServerApp.Identity.Abstractions;
 @using ResponsiBoss.BlazorServerApp.Identity.Providers;
 @using ResponsiBoss.BlazorServerApp.Identity;
+@using ResponsiBoss.BlazorServerApp.Services.Abstractions
 @using ResponsiBoss.BlazorServerApp.Validators;
 
 <MudGrid>
@@ -47,7 +48,7 @@
 
         if (!form.IsValid)
             return;
-        
+
         var result = await applicationSignInManager.SignInResultAsync(input.Email, input.Password);
 
         if (result.IsSuccess)
@@ -67,25 +68,8 @@
         if (!firstRender)
             return;
 
-        await keyInterceptor.Connect("login-form", new KeyInterceptorOptions()
-        {
-            TargetClass = "mud-input",
-            Keys = new List<KeyOptions>()
-            {
-                new KeyOptions() { Key = "Enter", PreventDown = "key+none", SubscribeDown = true }
-            }
-        });
-
-        keyInterceptor.KeyDown += KeyDown;
+        await keyInterceptorService.CreateFormKeyInterceptor("login-form", "mud-input", SubmitAsync);
 
         await base.OnAfterRenderAsync(firstRender);
-    }
-
-    public async void KeyDown(KeyboardEventArgs e)
-    {
-        if (!e.Key.Equals("Enter", StringComparison.OrdinalIgnoreCase))
-            return;
-
-        await this.SubmitAsync();
     }
 }
