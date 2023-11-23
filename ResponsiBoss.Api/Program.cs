@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using ResponsiBoss.Api;
 using ResponsiBoss.Api.Services;
 using ResponsiBoss.Api.Services.Abstractions;
+using ResponsiBoss.Data.Abstractions;
 using ResponsiBoss.Data.DependencyInjectionInfrastructure;
 using ResponsiBoss.Data.Models;
 using Serilog;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +16,14 @@ builder.Configuration.AddUserSecrets<Program>();
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IUserAuthenticationService, UserAuthenticationService>();
+builder.Services.AddTransient<IAppointmentService, AppointmentService>();
+
+builder.Services.AddScoped<IUserContext, UserContext>();
+builder.Services.AddScoped<IUserClaimService, UserClaimService>();
 
 // Implement Dependency Injection Container.
 builder.Services.Init(builder.Configuration);
@@ -69,6 +77,26 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
+    options.Events = new JwtBearerEvents() 
+    {
+        OnTokenValidated = context =>
+        {
+            var claimService = ResponsiBoss.Api.ServiceProvider.Current.GetRequiredService<IUserClaimService>();
+
+            // Add the access_token as a claim, as we may actually need it.
+            var accessToken = context.SecurityToken as System.IdentityModel.Tokens.Jwt.JwtSecurityToken;
+            if (accessToken != null)
+            {
+                ClaimsIdentity identity = (ClaimsIdentity)context.Principal.Identity;
+
+                if (identity != null)
+                    identity.AddClaim(claimService.BuildSessionKeyClaim(accessToken.RawData));
+            }
+
+            return Task.CompletedTask;
+        }
+    };
+
     options.TokenValidationParameters = new TokenValidationParameters()
     {
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
@@ -80,6 +108,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuerSigningKey = true, 
     };
 });
+
+ResponsiBoss.Api.ServiceProvider.Current = builder.Services.BuildServiceProvider();
 
 // Configure Serilog.
 builder.Host.UseSerilog((context, config) =>

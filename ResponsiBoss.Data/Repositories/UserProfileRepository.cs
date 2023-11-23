@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Logging;
+using ResponsiBoss.Data.Abstractions;
 using ResponsiBoss.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,10 @@ namespace ResponsiBoss.Data
     {
         private readonly ILogger<UserProfileRepository> _logger;
 
-        public UserProfileRepository(Abstractions.IDataContext dataContext, 
+        public UserProfileRepository(IDataContext dataContext,
+            IUserContext userContext,
             ILogger<UserProfileRepository> logger)
-            : base (dataContext)
+            : base (dataContext, userContext)
         {
             _logger = logger;
         }

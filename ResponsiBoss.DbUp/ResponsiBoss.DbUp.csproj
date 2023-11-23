@@ -9,10 +9,12 @@
 
   <ItemGroup>
     <None Remove="Scripts\Script_1 - Create User Profile Table.sql" />
+    <None Remove="Scripts\Script_2 - Create Appointment Table.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Scripts\Script_1 - Create User Profile Table.sql" />
+    <EmbeddedResource Include="Scripts\Script_2 - Create Appointment Table.sql" />
   </ItemGroup>
 
   <ItemGroup>

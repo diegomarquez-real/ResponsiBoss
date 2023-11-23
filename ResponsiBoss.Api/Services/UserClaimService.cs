@@ -1,7 +1,7 @@
-﻿using ResponsiBoss.BlazorServerApp.Identity.Abstractions;
+﻿using ResponsiBoss.Api.Services.Abstractions;
 using System.Security.Claims;
 
-namespace ResponsiBoss.BlazorServerApp.Identity
+namespace ResponsiBoss.Api.Services
 {
     public class UserClaimService : IUserClaimService
     {
@@ -41,7 +41,7 @@ namespace ResponsiBoss.BlazorServerApp.Identity
 
         #endregion
 
-        #region EmailAddress
+        #region Email
 
         public Claim BuildEmailClaim(string email)
         {
@@ -55,33 +55,23 @@ namespace ResponsiBoss.BlazorServerApp.Identity
 
         #endregion
 
-        #region BearerToken
+        #region SessionKey
 
-        public Claim BuildBearerTokenClaim(string bearerToken)
+        public Claim BuildSessionKeyClaim(string sessionKey)
         {
-            return new Claim("BearerToken", bearerToken);
+            return new Claim("session_key", sessionKey);
         }
 
-        public string GetCurrentBearerTokenThrowIfMissing()
+        public string GetSessionKey()
         {
-            var bearerToken = this.GetCurrentBearerToken();
-
-            if (String.IsNullOrEmpty(bearerToken))
-                throw new ApplicationException("User Claims Failed To Provide API Access Code.");
-            else
-                return bearerToken;
-        }
-
-        public string GetCurrentBearerToken()
-        {
-            return this.GetClaimByType("BearerToken")?.Value;
+            return this.GetClaimByType("session_key")?.Value;
         }
 
         #endregion
 
         private Claim GetClaimByType(string type)
         {
-            // This Is Where We Actually Read The Claims From The MVC.NET Identity User.
+            //this is where we actually read the claims from the MVC.NET identity user
             var identity = (ClaimsIdentity)_httpContextAccessor.HttpContext.User.Identity;
 
             return identity.FindFirst(x => x.Type == type);

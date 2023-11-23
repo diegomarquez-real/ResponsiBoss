@@ -15,14 +15,17 @@ namespace ResponsiBoss.Api.Services
         private readonly IOptions<JwtBearerOptions> _jwtBearerOptions;
         private readonly IOptions<TokenOptions> _tokenOptions;
         private readonly IUserService _userService;
+        private readonly IUserClaimService _userClaimService;
 
         public UserAuthenticationService(IOptions<JwtBearerOptions> jwtBearerOptions,
             IOptions<TokenOptions> tokenOptions,
-            IUserService userService)
+            IUserService userService,
+            IUserClaimService userClaimService)
         {
             _jwtBearerOptions = jwtBearerOptions;
             _tokenOptions = tokenOptions;
             _userService = userService;
+            _userClaimService = userClaimService;
         }
 
         public async Task<AuthTokenModel> AuthenticateAsync(UserLoginModel userLoginModel)
@@ -36,8 +39,8 @@ namespace ResponsiBoss.Api.Services
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Sid, user.UserId.ToString()),
-                new Claim(ClaimTypes.Email, user.EmailAddress),
+                _userClaimService.BuildUserIdClaim(user.UserId),
+                _userClaimService.BuildEmailClaim(user.EmailAddress)
             };
 
             var jwtToken = new JwtSecurityToken(

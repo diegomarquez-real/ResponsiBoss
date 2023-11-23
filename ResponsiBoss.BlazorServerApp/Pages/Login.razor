@@ -45,20 +45,16 @@
     {
         await form.Validate();
 
-        if(form.IsValid)
-        {
-            var result = await applicationSignInManager.SignInResultAsync(input.Email, input.Password);
+        if (!form.IsValid)
+            return;
+        
+        var result = await applicationSignInManager.SignInResultAsync(input.Email, input.Password);
 
-            if(result.IsSuccess)
-            {
-                navigationManager.NavigateTo($"User/Login?key={result.AuthTokenTempId}", true);
-            }
-            else
-            {
-                snackbar.Add(result.ErrorMessage, Severity.Error);
-                StateHasChanged();
-            }
-        }
+        if (result.IsSuccess)
+            navigationManager.NavigateTo($"User/Login?key={result.AuthTokenTempId}", true);
+
+        snackbar.Add(result.ErrorMessage, Severity.Error);
+        StateHasChanged();
     }
 
     public class InputModel
