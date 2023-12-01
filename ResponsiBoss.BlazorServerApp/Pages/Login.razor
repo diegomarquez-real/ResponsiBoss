@@ -52,7 +52,7 @@
         var result = await applicationSignInManager.SignInResultAsync(input.Email, input.Password);
 
         if (result.IsSuccess)
-            navigationManager.NavigateTo($"User/Login?key={result.AuthTokenTempId}", false);
+            navigationManager.NavigateTo($"User/Login?key={result.AuthTokenTempId}", true);
 
         snackbar.Add(result.ErrorMessage, Severity.Error);
     }
