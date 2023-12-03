@@ -3,7 +3,6 @@
 
 <AuthorizeView>
     <Authorized>
-
         <MudThemeProvider IsDarkMode="true" />
         <MudDialogProvider />
         <MudSnackbarProvider />
@@ -15,11 +14,8 @@
                 @Body
             </MudMainContent>
         </MudLayout>
-
     </Authorized>
     <NotAuthorized>
-
         <LoginRedirect />
-
     </NotAuthorized>
 </AuthorizeView>

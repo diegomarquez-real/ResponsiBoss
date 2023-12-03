@@ -1,0 +1,108 @@
+﻿@page "/Calendar/Month"
+
+<div id="calendar-month-container">
+    <MudSimpleTable Hover="false" Bordered="true" Style="overflow-x: hidden;">
+        <thead>
+            <tr>
+                @foreach (var dow in DaysOfWeek)
+                {
+                    <th class="dow-header">@dow</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cellRow in Cells)
+            {
+                <tr>
+                    @foreach (var cell in cellRow)
+                    {
+                        <td class="month-cell p-0">
+                            <div class="w-100 h-100 @cell.CurrentDateStyle">
+                                <div class="row mt-2">
+                                    <div class="col-2">
+                                        <div class="@cell.CurrentMonthStyle fw-bolder ms-2">@cell.Day</div>
+                                    </div>
+                                    <div class="col-9">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+</div>
+
+@code {
+    [Parameter]
+    public DateTime CurrentDate { get; set; }
+
+    public List<List<CellModel>> Cells { get; set; }
+
+    public List<String> DaysOfWeek { get; set; } = new List<string>() { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    private void LoadCells()
+    {
+        this.Cells = new List<List<CellModel>>();
+
+        var day = this.CurrentDate.Date.Day;
+
+        var startDate = this.CurrentDate;
+
+        while (startDate.Date.Day != 1)
+        {
+            startDate = startDate.Date.AddDays(-1);
+        }
+
+        var dayOfWeek = startDate.DayOfWeek;
+
+        while (startDate.DayOfWeek != DayOfWeek.Sunday)
+        {
+            startDate = startDate.Date.AddDays(-1);
+        }
+
+        for (int rc = 1; rc <= 6; rc++)
+        {
+            var cellRow = new List<CellModel>();
+
+            while (cellRow.Count != 7)
+            {
+                var cell = new CellModel()
+                {
+                    Day = startDate.Day,
+                    CurrentMonthStyle = startDate.Month == this.CurrentDate.Month ? "" : "text-dark opacity-75",
+                    CurrentDateStyle = startDate.Date.ToShortDateString().Equals(this.CurrentDate.Date.ToShortDateString(), StringComparison.OrdinalIgnoreCase) ?
+                                       "current-date" : ""
+                };
+
+                cellRow.Add(cell);
+
+                startDate = startDate.AddDays(1);
+            }
+
+            Cells.Add(cellRow);
+        }
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        LoadCells();
+
+        return base.OnParametersSetAsync();
+    }
+
+    public class CellModel
+    {
+        public int Day { get; set; }
+
+        public string CurrentMonthStyle { get; set; }
+
+        public string CurrentDateStyle { get; set; }
+    }
+}
