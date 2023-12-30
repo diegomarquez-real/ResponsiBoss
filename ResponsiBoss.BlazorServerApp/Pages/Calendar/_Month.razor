@@ -16,10 +16,10 @@
                 <tr>
                     @foreach (var cell in cellRow)
                     {
-                        <td class="month-cell p-0">
+                        <td class="month-cell p-0" style="height: calc(65vh / @(Cells.Count == 6 ? 6 : 5));">
                             <div class="w-100 h-100 @cell.CurrentDateStyle">
-                                <div class="row mt-2">
-                                    <div class="col-2">
+                                <div class="row">
+                                    <div class="col-2 mt-2">
                                         <div class="@cell.CurrentMonthStyle fw-bolder ms-2">@cell.Day</div>
                                     </div>
                                     <div class="col-9">
@@ -42,9 +42,11 @@
 
     public List<String> DaysOfWeek { get; set; } = new List<string>() { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
-    protected override Task OnInitializedAsync()
+    protected override Task OnParametersSetAsync()
     {
-        return base.OnInitializedAsync();
+        this.LoadCells();
+
+        return base.OnParametersSetAsync();
     }
 
     private void LoadCells()
@@ -77,7 +79,7 @@
                 {
                     Day = startDate.Day,
                     CurrentMonthStyle = startDate.Month == this.CurrentDate.Month ? "" : "text-dark opacity-75",
-                    CurrentDateStyle = startDate.Date.ToShortDateString().Equals(this.CurrentDate.Date.ToShortDateString(), StringComparison.OrdinalIgnoreCase) ?
+                    CurrentDateStyle = startDate.Date.ToShortDateString().Equals(DateTime.Now.ToShortDateString(), StringComparison.OrdinalIgnoreCase) ?
                                        "current-date" : ""
                 };
 
@@ -87,14 +89,10 @@
             }
 
             Cells.Add(cellRow);
+
+            if (cellRow.LastOrDefault() != null && !String.IsNullOrEmpty(cellRow.Last().CurrentMonthStyle))
+                break;
         }
-    }
-
-    protected override Task OnParametersSetAsync()
-    {
-        LoadCells();
-
-        return base.OnParametersSetAsync();
     }
 
     public class CellModel

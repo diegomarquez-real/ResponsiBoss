@@ -4,10 +4,10 @@
 
 <MudCard Class="mx-5 my-4">
     <MudCardActions>
-        <MudIconButton Class="ms-2 me-1" Variant="Variant.Filled" Color="Color.Primary">
+        <MudIconButton Class="ms-2 me-1" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => UpdateCalendarPosition(-1)">
             <MudIcon Class="ms-2 my-1" Icon="@Icons.Material.Filled.ArrowBackIos" Size="Size.Small"></MudIcon>
         </MudIconButton>
-        <MudIconButton Class="me-2" Variant="Variant.Filled" Color="Color.Primary">
+        <MudIconButton Class="me-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => UpdateCalendarPosition(1)">
             <MudIcon Class="mx-1 my-1" Icon="@Icons.Material.Filled.ArrowForwardIos" Size="Size.Small"></MudIcon>
         </MudIconButton>
         <MudButton Class="py-2" Variant="Variant.Filled" Color="Color.Primary"
@@ -33,7 +33,7 @@
                 <_Month CurrentDate="@CurrentDate" />
                 break;
             case CalendarFormatTypeEnum.Week:
-
+                <_Week CurrentDate="@CurrentDate" />
                 break;
             case CalendarFormatTypeEnum.Day:
 
@@ -97,6 +97,25 @@
         this.CalendarFormatType = calendarFormatType;
 
         this.LoadCalendarFormatBtns();
+    }
+
+    private void UpdateCalendarPosition(int position)
+    {
+        switch (this.CalendarFormatType)
+        {
+            case CalendarFormatTypeEnum.Month:
+                this.CurrentDate = this.CurrentDate.AddMonths(position);
+                break;
+            case CalendarFormatTypeEnum.Week:
+                var weekPosition = position == 1 ? 7 : -7;
+                this.CurrentDate = this.CurrentDate.AddDays(weekPosition);
+                break;
+            case CalendarFormatTypeEnum.Day:
+                this.CurrentDate = this.CurrentDate.AddDays(position);
+                break;
+            default:
+                break;
+        }
     }
 
     private void LoadCalendarFormatBtns()

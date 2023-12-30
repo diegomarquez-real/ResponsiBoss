@@ -1,5 +1,4 @@
 ﻿.month-cell {
-    height: calc(65vh / 6);
     vertical-align: top;
     text-align: left;
 }
