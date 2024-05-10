@@ -36,10 +36,8 @@
                 <_Week CurrentDate="@CurrentDate" />
                 break;
             case CalendarFormatTypeEnum.Day:
-
                 break;
             default:
-
                 break;
         }
         
@@ -48,20 +46,15 @@
 
 @code {
     private IJSObjectReference? jsModule;
-
     public DateTime CurrentDate { get; set; } = DateTime.Now;
-
     public string CurrentDateLabel { get; set; } = String.Empty;
-
     public CalendarFormatTypeEnum CalendarFormatType { get; set; } = CalendarFormatTypeEnum.Month;
-
     public List<CalendarFormatBtnModel> CalendarFormatBtns { get; set; }
 
     protected override Task OnInitializedAsync()
     {
         this.LoadCalendarFormatBtns();
-
-        this.CurrentDateLabel = this.CurrentDate.ToString("MMMM yyyy");
+        this.CurrentDateLabel = this.CurrentDate.ToCalendarMonthString();
 
         return base.OnInitializedAsync();
     }
@@ -85,8 +78,24 @@
             return;
 
         this.CurrentDate = date.Value;
+        this.UpdateCalendarDateLabel(this.CalendarFormatType);
+    }
 
-        this.CurrentDateLabel = this.CurrentDate.ToString("MMMM yyyy");
+    private void UpdateCalendarDateLabel(CalendarFormatTypeEnum calendarFormatType)
+    {
+        switch (calendarFormatType)
+        {
+            case CalendarFormatTypeEnum.Month:
+                this.CurrentDateLabel = this.CurrentDate.ToCalendarMonthString();
+                break;
+            case CalendarFormatTypeEnum.Week:
+                this.CurrentDateLabel = this.CurrentDate.ToCalendarWeekString();
+                break;
+            case CalendarFormatTypeEnum.Day:
+                break;
+            default:
+                break;
+        }
     }
 
     private void UpdateCalendarFormat(CalendarFormatTypeEnum calendarFormatType)
@@ -95,7 +104,7 @@
             return;
 
         this.CalendarFormatType = calendarFormatType;
-
+        this.UpdateCalendarDateLabel(calendarFormatType);
         this.LoadCalendarFormatBtns();
     }
 

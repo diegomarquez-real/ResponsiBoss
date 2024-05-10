@@ -79,7 +79,7 @@
                 {
                     Day = startDate.Day,
                     CurrentMonthStyle = startDate.Month == this.CurrentDate.Month ? "" : "text-dark opacity-75",
-                    CurrentDateStyle = startDate.Date.ToShortDateString().Equals(DateTime.Now.ToShortDateString(), StringComparison.OrdinalIgnoreCase) ?
+                    CurrentDateStyle = startDate.Date.ShortDateStringEquals(DateTime.Now) ?
                                        "current-date" : ""
                 };
 
