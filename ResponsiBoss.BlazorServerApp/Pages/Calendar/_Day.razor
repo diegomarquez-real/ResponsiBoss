@@ -1,0 +1,88 @@
+﻿@page "/Calendar/Day"
+
+<div id="calendar-day-container">
+    <MudSimpleTable Hover="false" Bordered="true" Style="overflow-x: hidden;">
+        <thead>
+            <tr>
+                <th class="col-1"></th>
+                <th class="col-11 day-header">@DayLabel</th>   
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cellRow in Cells)
+            {
+                <tr>
+                    <td>@cellRow[0].Time</td>
+                    @for (var cell = 1; cell < cellRow.Count; cell++)
+                    {
+                        <td class="day-cell p-0">
+                            <div class="w-100 h-100 @cellRow[cell].CurrentDateStyle">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <div class=" fw-bolder ms-2"></div>
+                                    </div>
+                                    <div class="col-9">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+</div>
+
+@code {
+    [Parameter]
+    public DateTime CurrentDate { get; set; }
+    public string DayLabel { get; set; }
+    public List<List<CellModel>> Cells { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {
+        this.LoadCells();
+
+        return base.OnParametersSetAsync();
+    }
+
+    private void LoadCells()
+    {
+        this.Cells = new List<List<CellModel>>();
+        this.DayLabel = $"{this.CurrentDate.DayOfWeek.ToString()} {this.CurrentDate.ToString("dd")}";
+        var startTime = new TimeSpan(0, 0, 0);
+
+        for (int rc = 1; rc <= 24; rc++)
+        {
+            var cellRow = new List<CellModel>();
+            cellRow.Add(new CellModel() { Time = startTime.ToString(@"hh\:mm") });
+
+            while (cellRow.Count != 2)
+            {
+                var cell = new CellModel();
+
+                if (this.CurrentDate.ShortDateStringEquals(DateTime.Now))
+                {
+                    cell.CurrentDateStyle = "current-date-middle";
+
+                    if (rc == 1)
+                        cell.CurrentDateStyle = "current-date-start";
+                    else if (rc == 24)
+                        cell.CurrentDateStyle = "current-date-end";
+                }
+
+                cellRow.Add(cell);
+            }
+
+            Cells.Add(cellRow);
+            startTime = startTime.Add(new TimeSpan(1, 0, 0));
+        }
+    }
+
+    public class CellModel
+    {
+        public string Time { get; set; }
+
+        public string CurrentDateStyle { get; set; }
+    }
+}

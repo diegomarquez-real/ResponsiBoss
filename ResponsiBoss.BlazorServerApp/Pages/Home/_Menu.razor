@@ -1,0 +1,25 @@
+﻿@page "/Home/Menu"
+@inject NavigationManager navigationManager
+
+<div class="row">
+    <div class="col-sm-11 col-md-11 col-lg-10 col-xl-7 col-xxl-7">
+        <MudCard Class="mx-5 mt-5">
+            <MudCardActions>
+                <MudButton Class="mx-3 mt-3 mb-1 d-block" Variant="Variant.Filled" Color="Color.Primary"
+                           OnClick="() => NavigateToMenuOption(calendarUrl)">
+                    <MudIcon Class="mt-2 mb-1" Icon="@Icons.Material.Filled.CalendarMonth" Style="font-size: 6rem;" />
+                    <MudText Class="fw-bolder" Style="font-size: 1.25rem;">Calendar</MudText>
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </div>
+</div>
+
+@code {
+    private readonly string calendarUrl = "/Calendar";
+
+    private void NavigateToMenuOption(string option)
+    {
+        navigationManager.NavigateTo($"{option}", false);
+    }
+}

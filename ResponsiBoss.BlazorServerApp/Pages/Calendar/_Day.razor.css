@@ -1,0 +1,25 @@
+﻿.day-cell {
+    vertical-align: top;
+    text-align: left;
+    height: 100px;
+}
+
+.day-header {
+    text-align: center;
+}
+
+.current-date-start {
+    border: 2px solid rgba(126,111,255,255);
+    border-bottom: 0;
+}
+
+.current-date-middle {
+    border: 2px solid rgba(126,111,255,255);
+    border-top: 0;
+    border-bottom: 0;
+}
+
+.current-date-end {
+    border: 2px solid rgba(126,111,255,255);
+    border-top: 0;
+}

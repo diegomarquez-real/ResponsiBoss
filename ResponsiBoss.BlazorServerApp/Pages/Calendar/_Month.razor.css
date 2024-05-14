@@ -1,0 +1,16 @@
+﻿.month-cell {
+    vertical-align: top;
+    text-align: left;
+}
+
+.dow-header {
+    text-align: center;
+}
+
+.current-date {
+    border: 2px solid rgba(126,111,255,255);
+}
+
+::deep .mud-table-container {
+    overflow: hidden;
+}

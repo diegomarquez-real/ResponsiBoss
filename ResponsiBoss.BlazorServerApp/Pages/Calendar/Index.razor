@@ -1,0 +1,160 @@
+﻿@page "/Calendar"
+@inject IJSRuntime JS
+@using ResponsiBoss.BlazorServerApp.Pages.Calendar
+
+<MudCard Class="mx-5 my-4">
+    <MudCardActions>
+        <MudIconButton Class="ms-2 me-1" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => UpdateCalendarPosition(-1)">
+            <MudIcon Class="ms-2 my-1" Icon="@Icons.Material.Filled.ArrowBackIos" Size="Size.Small"></MudIcon>
+        </MudIconButton>
+        <MudIconButton Class="me-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => UpdateCalendarPosition(1)">
+            <MudIcon Class="mx-1 my-1" Icon="@Icons.Material.Filled.ArrowForwardIos" Size="Size.Small"></MudIcon>
+        </MudIconButton>
+        <MudButton Class="py-2" Variant="Variant.Filled" Color="Color.Primary"
+                   OnClick="OpenDatePickerAsync">
+            <MudText>@CurrentDateLabel</MudText>
+        </MudButton>
+        <MudDatePicker Class="invisible ms-2" PickerVariant="PickerVariant.Inline" TransformOrigin="Origin.BottomCenter" DateFormat="dd/MM/yyyy" Date="CurrentDate"
+                       Style="width: 0;"
+                       UserAttributes="@(new Dictionary<string, object>() { {"id", "calendar-date-picker"} })"
+                       DateChanged="(newDate) => UpdateDateBtn(newDate)">
+        </MudDatePicker>
+        <MudButtonGroup Class="float-end me-2" OverrideStyles="false">
+            @foreach(var cfb in CalendarFormatBtns)
+            {
+                <MudButton Color="Color.Primary" Variant="@cfb.Varient" OnClick="() => UpdateCalendarFormat(cfb.CalendarFormatType)">@cfb.Name</MudButton>
+            }    
+        </MudButtonGroup>
+    </MudCardActions>
+    <MudCardContent>
+        @switch (this.CalendarFormatType)
+        {
+            case CalendarFormatTypeEnum.Month:
+                <_Month CurrentDate="@CurrentDate" />
+                break;
+            case CalendarFormatTypeEnum.Week:
+                <_Week CurrentDate="@CurrentDate" />
+                break;
+            case CalendarFormatTypeEnum.Day:
+                <_Day CurrentDate="@CurrentDate" />
+                break;
+            default:
+                break;
+        }
+        
+    </MudCardContent>
+</MudCard>
+
+@code {
+    private IJSObjectReference? jsModule;
+    public DateTime CurrentDate { get; set; } = DateTime.Now;
+    public string CurrentDateLabel { get; set; } = String.Empty;
+    public CalendarFormatTypeEnum CalendarFormatType { get; set; } = CalendarFormatTypeEnum.Month;
+    public List<CalendarFormatBtnModel> CalendarFormatBtns { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        this.LoadCalendarFormatBtns();
+        this.CurrentDateLabel = this.CurrentDate.ToCalendarMonthString();
+
+        return base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Calendar/Index.razor.js");
+    }
+
+    private async Task OpenDatePickerAsync()
+    {
+        await jsModule!.InvokeVoidAsync("OpenCalendarDatePicker");
+    }
+
+    private void UpdateDateBtn(DateTime? date)
+    {
+        if (!date.HasValue)
+            return;
+
+        this.CurrentDate = date.Value;
+        this.UpdateCalendarDateLabel(this.CalendarFormatType);
+    }
+
+    private void UpdateCalendarDateLabel(CalendarFormatTypeEnum calendarFormatType)
+    {
+        switch (calendarFormatType)
+        {
+            case CalendarFormatTypeEnum.Month:
+                this.CurrentDateLabel = this.CurrentDate.ToCalendarMonthString();
+                break;
+            case CalendarFormatTypeEnum.Week:
+                this.CurrentDateLabel = this.CurrentDate.ToCalendarWeekString();
+                break;
+            case CalendarFormatTypeEnum.Day:
+                this.CurrentDateLabel = this.CurrentDate.ToCalendarDayString();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void UpdateCalendarFormat(CalendarFormatTypeEnum calendarFormatType)
+    {
+        if (calendarFormatType == this.CalendarFormatType)
+            return;
+
+        this.CalendarFormatType = calendarFormatType;
+        this.UpdateCalendarDateLabel(calendarFormatType);
+        this.LoadCalendarFormatBtns();
+    }
+
+    private void UpdateCalendarPosition(int position)
+    {
+        switch (this.CalendarFormatType)
+        {
+            case CalendarFormatTypeEnum.Month:
+                this.CurrentDate = this.CurrentDate.AddMonths(position);
+                break;
+            case CalendarFormatTypeEnum.Week:
+                var weekPosition = position == 1 ? 7 : -7;
+                this.CurrentDate = this.CurrentDate.AddDays(weekPosition);
+                break;
+            case CalendarFormatTypeEnum.Day:
+                this.CurrentDate = this.CurrentDate.AddDays(position);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void LoadCalendarFormatBtns()
+    {
+        this.CalendarFormatBtns = new List<CalendarFormatBtnModel>()
+        {
+            new CalendarFormatBtnModel() { Name = "Month", CalendarFormatType = CalendarFormatTypeEnum.Month,
+                                           Varient = this.CalendarFormatType == CalendarFormatTypeEnum.Month ? Variant.Filled : Variant.Outlined },
+            new CalendarFormatBtnModel() { Name = "Week", CalendarFormatType = CalendarFormatTypeEnum.Week,
+                                           Varient = this.CalendarFormatType == CalendarFormatTypeEnum.Week ? Variant.Filled : Variant.Outlined },
+            new CalendarFormatBtnModel() { Name = "Day", CalendarFormatType = CalendarFormatTypeEnum.Day,
+                                           Varient = this.CalendarFormatType == CalendarFormatTypeEnum.Day ? Variant.Filled : Variant.Outlined }
+        };
+    }
+
+    public class CalendarFormatBtnModel
+    {
+        public string Name { get; set; }
+
+        public CalendarFormatTypeEnum CalendarFormatType { get; set; }
+
+        public Variant Varient { get; set; }
+    }
+
+    public enum CalendarFormatTypeEnum
+    {
+        Month = 1,
+        Week = 2,
+        Day = 3
+    }
+}

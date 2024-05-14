@@ -17,24 +17,24 @@
 <MudGrid>
     <MudItem xs="1" sm="2" md="3" lg="4" xl="4" xxl="5"></MudItem>
     <MudItem xs="10" sm="8" md="6" lg="4" xl="4" xxl="2">
-            <MudPaper Class="pa-4">
+        <MudPaper Class="pa-4">
             <MudForm Model="input" @ref="form" Validation="new LoginValidator().ValidateValue"
-                     UserAttributes="@(new Dictionary<string, object>() { {"id", "login-form"} })">
-                    <MudTextField T="string" Label="Email" @bind-Value="input.Email"
-                                    For="@(() => input.Email)"
-                                    Immediate="true" />
-                    <MudTextField T="string" Label="Password" @bind-Value="input.Password"
-                                    For="@(() => input.Password)"
-                                    Immediate="true"
-                                    InputType="InputType.Password" />
-                    <div class="d-flex mt-3">
-                        <MudLink Href="/Register" Typo="Typo.body2">Create New Account</MudLink>
-                        <MudButton Variant="Variant.Filled " Class="ms-auto" Color="Color.Primary"
-                                   DisableElevation="true" OnClick="SubmitAsync">Login</MudButton>
-                    </div>
-                </MudForm>
-            </MudPaper>
-        </MudItem>
+                    UserAttributes="@(new Dictionary<string, object>() { {"id", "login-form"} })">
+                <MudTextField T="string" Label="Email" @bind-Value="input.Email"
+                                For="@(() => input.Email)"
+                                Immediate="true" />
+                <MudTextField T="string" Label="Password" @bind-Value="input.Password"
+                                For="@(() => input.Password)"
+                                Immediate="true"
+                                InputType="InputType.Password" />
+                <div class="d-flex mt-3">
+                    <MudLink Href="/Register" Typo="Typo.body2">Create New Account</MudLink>
+                    <MudButton Variant="Variant.Filled " Class="ms-auto" Color="Color.Primary"
+                                DisableElevation="true" OnClick="SubmitAsync">Login</MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
     <MudItem xs="1" sm="2" md="3" lg="4" xl="4" xxl="5"></MudItem>
 </MudGrid>
 
@@ -52,7 +52,7 @@
         var result = await applicationSignInManager.SignInResultAsync(input.Email, input.Password);
 
         if (result.IsSuccess)
-            navigationManager.NavigateTo($"User/Login?key={result.AuthTokenTempId}", false);
+            navigationManager.NavigateTo($"User/Login?key={result.AuthTokenTempId}", true);
 
         snackbar.Add(result.ErrorMessage, Severity.Error);
     }
