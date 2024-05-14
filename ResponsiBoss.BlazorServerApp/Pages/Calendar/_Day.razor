@@ -1,14 +1,11 @@
-﻿@page "/Calendar/Week"
+﻿@page "/Calendar/Day"
 
-<div id="calendar-week-container">
+<div id="calendar-day-container">
     <MudSimpleTable Hover="false" Bordered="true" Style="overflow-x: hidden;">
         <thead>
             <tr>
                 <th class="col-1"></th>
-                @foreach (var dow in DaysOfWeek)
-                {
-                    <th class="dow-header">@dow</th>
-                }
+                <th class="col-11 day-header">@DayLabel</th>   
             </tr>
         </thead>
         <tbody>
@@ -18,7 +15,7 @@
                     <td>@cellRow[0].Time</td>
                     @for (var cell = 1; cell < cellRow.Count; cell++)
                     {
-                        <td class="week-cell p-0">
+                        <td class="day-cell p-0">
                             <div class="w-100 h-100 @cellRow[cell].CurrentDateStyle">
                                 <div class="row">
                                     <div class="col-2">
@@ -39,42 +36,20 @@
 @code {
     [Parameter]
     public DateTime CurrentDate { get; set; }
+    public string DayLabel { get; set; }
     public List<List<CellModel>> Cells { get; set; }
-    public List<String> DaysOfWeek { get; set; }
 
     protected override Task OnParametersSetAsync()
     {
-        var currentDayInWeek = this.LoadDaysOfWeek();
-        this.LoadCells(currentDayInWeek);
+        this.LoadCells();
 
         return base.OnParametersSetAsync();
     }
 
-    private bool LoadDaysOfWeek()
-    {
-        this.DaysOfWeek = new List<string>();
-        var startDate = this.CurrentDate;
-        bool currentDayInWeek = false;
-
-        while(startDate.DayOfWeek != DayOfWeek.Sunday)
-        {
-            startDate = startDate.AddDays(-1);
-        }
-
-        for(int daw = 1; daw <= 7; daw++)
-        {
-            currentDayInWeek = !currentDayInWeek ? startDate.ShortDateStringEquals(DateTime.Now) : currentDayInWeek;
-            this.DaysOfWeek.Add($"{startDate.DayOfWeek.ToString().Substring(0, 3)} {startDate.Date.Day}");
-            startDate = startDate.Date.AddDays(1);
-        }
-
-        return currentDayInWeek;
-    }
-
-    private void LoadCells(bool currentDayInWeek)
+    private void LoadCells()
     {
         this.Cells = new List<List<CellModel>>();
-        var day = this.CurrentDate.Date.Day;
+        this.DayLabel = $"{this.CurrentDate.DayOfWeek.ToString()} {this.CurrentDate.ToString("dd")}";
         var startTime = new TimeSpan(0, 0, 0);
 
         for (int rc = 1; rc <= 24; rc++)
@@ -82,11 +57,11 @@
             var cellRow = new List<CellModel>();
             cellRow.Add(new CellModel() { Time = startTime.ToString(@"hh\:mm") });
 
-            while (cellRow.Count != 8)
+            while (cellRow.Count != 2)
             {
                 var cell = new CellModel();
 
-                if (cellRow.Count == (int)DateTime.Now.DayOfWeek + 1 && currentDayInWeek)
+                if (this.CurrentDate.ShortDateStringEquals(DateTime.Now))
                 {
                     cell.CurrentDateStyle = "current-date-middle";
 

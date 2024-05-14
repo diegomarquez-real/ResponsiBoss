@@ -36,6 +36,7 @@
                 <_Week CurrentDate="@CurrentDate" />
                 break;
             case CalendarFormatTypeEnum.Day:
+                <_Day CurrentDate="@CurrentDate" />
                 break;
             default:
                 break;
@@ -92,6 +93,7 @@
                 this.CurrentDateLabel = this.CurrentDate.ToCalendarWeekString();
                 break;
             case CalendarFormatTypeEnum.Day:
+                this.CurrentDateLabel = this.CurrentDate.ToCalendarDayString();
                 break;
             default:
                 break;

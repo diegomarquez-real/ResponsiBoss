@@ -28,6 +28,11 @@
             return result;
         }
 
+        public static string ToCalendarDayString(this DateTime dateTime)
+        {
+            return dateTime.ToString("dd MMM yyyy");
+        }
+
         public static bool ShortDateStringEquals(this DateTime dateTime1, DateTime dateTime2)
         {
             return dateTime1.ToShortDateString().Equals(dateTime2.ToShortDateString(), StringComparison.OrdinalIgnoreCase);
