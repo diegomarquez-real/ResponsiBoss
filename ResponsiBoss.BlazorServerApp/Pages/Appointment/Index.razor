@@ -1,0 +1,71 @@
+﻿@page "/Appointment"
+@inject IDialogService dialogService
+@inject Api.Client.Abstractions.IAppointmentClient appointmentClient
+
+<div id="appointment-container" class="container">
+    <div class="mt-4">
+        <MudTable id="appointment-table" Items="@Elements" Dense="false" Hover="false" Bordered="true" Striped="true">
+            <ToolBarContent>
+                <div class="d-flex w-100">
+                    <div id="appointment-actions" class="ms-auto">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                   OnClick="() => OpenAppointmentDialogAsync(AppointmentOptions.Create)">
+                                   Create
+                        </MudButton>
+                    </div>
+                </div>
+            </ToolBarContent>
+        </MudTable>
+    </div>
+</div>
+
+@code {
+    private List<Api.Models.AppointmentModel> Elements = new List<Api.Models.AppointmentModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.Elements = await appointmentClient.GetAppointmentsAsync();
+    }
+
+    private async Task OpenAppointmentDialogAsync(AppointmentOptions option)
+    {
+        var dialogOptions = new DialogOptions 
+        { 
+            CloseOnEscapeKey = true,
+            NoHeader = true, 
+            MaxWidth = MaxWidth.Small, 
+            FullWidth = true 
+        };
+
+        switch (option)
+        {
+            case AppointmentOptions.Create:
+                await this.CreateAppointmentDialog(dialogOptions);
+                break;
+            default:
+                break;
+        }   
+    }
+
+    private async Task CreateAppointmentDialog(DialogOptions options)
+    {
+        var dialog = dialogService.Show<Appointment._CreateAppointment>(null, options);
+
+        if (dialog == null)
+            return;
+
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        var appointment = await appointmentClient.GetAppointmentAsync((Guid)result.Data);
+
+        this.Elements.Insert(0, appointment);
+    }
+
+    public enum AppointmentOptions
+    {
+        Create
+    }
+}

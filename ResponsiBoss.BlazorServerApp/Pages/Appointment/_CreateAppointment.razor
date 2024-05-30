@@ -1,0 +1,60 @@
+﻿@page "/Appointment/Create"
+@using GeoJSON.Net.Feature
+@using ResponsiBoss.BlazorServerApp.Validators
+@inject Api.Client.Abstractions.IAppointmentClient appointmentClient
+@inject ISnackbar snackBar
+
+
+<MudDialog id="create-appointment-dialog">
+    <DialogContent>
+        <MudForm Model="input" @ref="form" Validation="new CreateAppointmentValidator().ValidateValue">
+            <MudTextField T="string" Label="Name" @bind-Value="input.Name"
+                          For="@(() => input.Name)"
+                          Immediate="true" />
+            <MudTextField T="string" Label="Notes" @bind-Value="input.Notes"
+                          For="@(() => input.Notes)"
+                          Immediate="true" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="CreateAsync">Create</MudButton>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    MudForm form;
+    InputModel input = new();
+
+    private void Cancel()
+    {
+        this.MudDialog.Cancel();
+    }
+
+    private async Task CreateAsync()
+    {
+        await form.Validate();
+
+        if (!form.IsValid)
+            return;
+
+        var createAppointmentModel = new Api.Models.Create.CreateAppointmentModel()
+        {
+            Name = input.Name,
+            Notes = input.Notes 
+        };
+
+        var appointmentId = await appointmentClient.CreateAppointmentAsync(createAppointmentModel);
+
+        snackBar.Add("Successfully created appointment!", Severity.Success);
+        MudDialog.Close(DialogResult.Ok(appointmentId));
+    }
+
+    public class InputModel
+    {
+        public string Name { get; set; }
+        public string Notes { get; set; } = String.Empty;
+        public Feature? Location { get; set; }
+    }
+}
