@@ -1,4 +1,9 @@
-﻿.week-cell {
+﻿::deep #calendar-week-table.mud-simple-table {
+    overflow-x: hidden;
+    height: 80vh;
+}
+
+.week-cell {
     vertical-align: top;
     text-align: left;
     height: 100px;
