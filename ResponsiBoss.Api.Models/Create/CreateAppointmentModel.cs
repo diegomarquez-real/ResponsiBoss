@@ -11,6 +11,6 @@ namespace ResponsiBoss.Api.Models.Create
     {
         public string Name { get; set; }
         public string Notes { get; set; }
-        public Feature? Location { get; set; }
+        public string Location { get; set; }
     }
 }

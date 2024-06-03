@@ -12,7 +12,7 @@ namespace ResponsiBoss.Api.Models
         public Guid AppointmentId { get; set; }
         public string Name { get; set; }
         public string Notes { get; set; }
-        public Feature? Feature { get; set; }
+        public string Location { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public Guid CreatedBy { get; set; }

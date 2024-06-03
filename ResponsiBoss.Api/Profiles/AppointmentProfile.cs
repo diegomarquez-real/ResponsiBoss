@@ -6,8 +6,7 @@ namespace ResponsiBoss.Api.Profiles
     {
         public AppointmentProfile()
         {
-            CreateMap<Data.Models.Appointment, Models.AppointmentModel>()
-                .ForMember(am => am.Feature, opt => opt.MapFrom(dm => dm.Location));
+            CreateMap<Data.Models.Appointment, Models.AppointmentModel>();
             CreateMap<Models.Create.CreateAppointmentModel, Data.Models.Appointment>();
             CreateMap<Models.Update.UpdateAppointmentModel, Data.Models.Appointment>();
         }

@@ -31,7 +31,7 @@ namespace ResponsiBoss.Data.Models
 		public Guid AppointmentId { get; set; }
 		public string Name { get; set; }
 		public string Notes { get; set; }
-		public Microsoft.SqlServer.Types.SqlGeography? Location { get; set; }
+		public string Location { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public DateTime? UpdatedOn { get; set; }
 		public Guid CreatedBy { get; set; }

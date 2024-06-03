@@ -2,7 +2,7 @@ CREATE TABLE [dbo].[Appointment](
 	[AppointmentId] [uniqueidentifier] NOT NULL,
 	[Name] [varchar](max) NOT NULL,
 	[Notes] [varchar](max) NULL,
-	[Location] [geography] NULL,
+	[Location] [varchar](max) NULL,
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedOn] [datetime] NULL,
 	[CreatedBy] [uniqueidentifier] NOT NULL,
