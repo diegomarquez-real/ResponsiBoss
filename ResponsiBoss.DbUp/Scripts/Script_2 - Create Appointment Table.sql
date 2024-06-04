@@ -3,6 +3,8 @@ CREATE TABLE [dbo].[Appointment](
 	[Name] [varchar](max) NOT NULL,
 	[Notes] [varchar](max) NULL,
 	[Location] [varchar](max) NULL,
+	[StartDate] [datetimeoffset](7) NOT NULL,
+	[EndDate] [datetimeoffset](7) NULL,
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedOn] [datetime] NULL,
 	[CreatedBy] [uniqueidentifier] NOT NULL,

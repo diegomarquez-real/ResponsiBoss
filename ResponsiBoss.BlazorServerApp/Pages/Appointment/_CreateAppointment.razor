@@ -4,7 +4,6 @@
 @inject Api.Client.Abstractions.IAppointmentClient appointmentClient
 @inject ISnackbar snackBar
 
-
 <MudDialog id="create-appointment-dialog">
     <DialogContent>
         <MudForm Model="input" @ref="form" Validation="new CreateAppointmentValidator().ValidateValue">
